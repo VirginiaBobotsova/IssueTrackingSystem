@@ -1,0 +1,35 @@
+<nav class="navbar navbar-default navbar-static-top" ng-controller="UserHeaderController">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#menu">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#/">SoftUni Social Network</a>
+        </div>
+
+        <div class="collapse navbar-collapse pull-right" id="menu">
+            <ul class="nav navbar-nav">
+                <li ng-class="{ active: isActive('/users/{{user.username}}')}"><a href="#/users/{{user.username}}">
+                    <img src="" ng-src="{{user.profileImageData}}" alt="{{user.name}}" ng-if="user.profileImageData">
+                    <img src="" ng-src="{{defaultProfileImageData}}" alt="{{user.name}}" ng-if="!user.profileImageData">
+                    <span>{{user.name}}</span>
+                </a></li>
+                <li ng-class="{ active: isActive('/')}"><a href="#/">News feed<span class="sr-only">(current)</span></a></li>
+                <li data-toggle="modal" data-target="#requests"><a href="" ng-click="showRequestsDetail()">Friends requests: <span class="badge">{{requestsCount}}</span></a></li>
+                <li ng-class="{ active: isActive('/profile')}"><a href="#/profile">Edit Profile</a></li>
+                <li ng-class="{ active: isActive('/profile/password')}"><a href="#/profile/password">Change password</a></li>
+                <li ng-class="{ active: isActive('/logout')}"><a href="#/logout">Logout</a></li>
+            </ul>
+            <form id="search" class="navbar-form navbar-left" role="search">
+                <div class="form-group">
+                    <input type="text" class="form-control" ng-model="searchTerm" ng-change="searchUsers(searchTerm)" placeholder="Search users">
+                    <div users-search-results ng-if="searchResultsShown"></div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div friend-requests></div>
+</nav>

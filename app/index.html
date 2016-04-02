@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html ng-app="issueTrackingSystemApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.css">
+    <link rel="stylesheet" href="css/toaster.css">
+    <link rel="stylesheet" href="css/app.css">
+    <title>Issue Tracking System</title>
+</head>
+<body>
+
+<div ng-view></div>
+
+<footer ng-include="'partials/footer.html'"></footer>
+
+<script type="text/javascript" src="lib/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="lib/bootstrap.min.js"></script>
+<script type="text/javascript" src="lib/angular/angular.js"></script>
+<script type="text/javascript" src="lib/angular/angular-route.js"></script>
+<script type="text/javascript" src="lib/angular/angular-resource.js"></script>
+<script type="text/javascript" src="lib/angular/angular-animate.js"></script>
+<script type="text/javascript" src="lib/ngStorage.js"></script>
+<script type="text/javascript" src="lib/toaster.js"></script>
+<script type="text/javascript" src="lib/angular-base64-upload.js"></script>
+
+<script type="text/javascript" src="js/app.js"></script>
+
+<script type="text/javascript" src="js/controllers/RegisterController.js"></script>
+<script type="text/javascript" src="js/controllers/LoginController.js"></script>
+<script type="text/javascript" src="js/controllers/HomeController.js"></script>
+<script type="text/javascript" src="js/controllers/LogoutController.js"></script>
+<script type="text/javascript" src="js/controllers/EditProfileController.js"></script>
+
+<script type="text/javascript" src="js/services/credentials.js"></script>
+<script type="text/javascript" src="js/services/data/userData.js"></script>
+
+
+</body>
+</html>
