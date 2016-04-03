@@ -5,15 +5,15 @@ var issueTrackingSystemApp = angular
     .config(function ($routeProvider) {
         $routeProvider
             .when('/', {
-                templateUrl: 'partials/home.html',
+                templateUrl: 'app/partials/home.html',
                 controller: 'HomeController'
             })
             .when('/logout', {
-                templateUrl: 'partials/user/logout.html',
+                templateUrl: 'app/partials/user/logout.html',
                 controller: 'LogoutController'
             })
             .when('/profile', {
-                templateUrl: 'partials/user/edit-profile.html',
+                templateUrl: 'app/partials/user/edit-profile.html',
                 controller: 'EditProfileController',
                 resolve:{
                     isLogged: function($location, $sessionStorage, $localStorage){
@@ -24,7 +24,7 @@ var issueTrackingSystemApp = angular
                 }
             })
             .when('/profile/password', {
-                templateUrl: 'partials/user/change-password.html',
+                templateUrl: 'app/partials/user/change-password.html',
                 controller: 'ChangePasswordController',
                 resolve:{
                     isLogged: function($location, $sessionStorage, $localStorage){
