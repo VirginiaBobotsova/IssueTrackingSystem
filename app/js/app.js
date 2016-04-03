@@ -4,38 +4,38 @@ var issueTrackingSystemApp = angular
     .module('issueTrackingSystemApp', ['ngResource', 'ngRoute', 'ngStorage', 'toaster', 'naif.base64'])
     .config(function ($routeProvider) {
         $routeProvider
-            .when('#/', {
+            .when('/', {
                 templateUrl: 'partials/home.html',
                 controller: 'HomeController'
             })
-            .when('#/logout', {
+            .when('/logout', {
                 templateUrl: 'partials/user/logout.html',
                 controller: 'LogoutController'
             })
-            .when('#/profile', {
+            .when('/profile', {
                 templateUrl: 'partials/user/edit-profile.html',
                 controller: 'EditProfileController',
                 resolve:{
                     isLogged: function($location, $sessionStorage, $localStorage){
                         if(!$sessionStorage.authorization && !$localStorage.authorization){
-                            $location.path('#/');
+                            $location.path('/');
                         }
                     }
                 }
             })
-            .when('#/profile/password', {
+            .when('/profile/password', {
                 templateUrl: 'partials/user/change-password.html',
                 controller: 'ChangePasswordController',
                 resolve:{
                     isLogged: function($location, $sessionStorage, $localStorage){
                         if(!$sessionStorage.authorization && !$localStorage.authorization){
-                            $location.path('#/');
+                            $location.path('/');
                         }
                     }
                 }
             })
             .otherwise({
-                redirectTo: '#/'
+                redirectTo: '/'
             })
     })
     .config(['$httpProvider', function($httpProvider) {
@@ -46,11 +46,11 @@ var issueTrackingSystemApp = angular
                     if(rejection.status == 401){
                         $localStorage.$reset();
                         $sessionStorage.$reset();
-                        $location.path('#/');
+                        $location.path('/');
                     }
 
                     if(rejection.status == 404) {
-                        $location.path('#/');
+                        $location.path('/');
                     }
 
                     defer.reject(rejection);
