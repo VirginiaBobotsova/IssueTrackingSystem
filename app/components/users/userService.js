@@ -1,7 +1,7 @@
 (function () {
 	'use strict';
-    angular.module('issueTrackingSystem.users.authenticationService', ['issueTrackingSystem.users.credentialsService'])
-        .factory('authenticationService', [
+    angular.module('userService', ['issueTrackingSystem.users.credentialsService'])
+        .factory('userService', [
             '$http',
             '$q',
             'BASE_URL',
@@ -43,6 +43,32 @@
 
                 }
 
+                function changePassword(password) {
+                    var authorization = credentialsService.getAuthorization();
+                    var deferred = $q.defer();
+                    $http.put(BASE_URL + 'me/ChangePassword', password, {headers : authorization})
+                        .then(function(responce) {
+                            deferred.resolve(responce.data);
+                        }, function(error) {
+                            deferred.reject(error);
+                        });
+
+                    return deferred.promise;
+                }
+
+                function editUser(user) {
+                    var authorization = credentialsService.getAuthorization();
+                    var deferred = $q.defer();
+                    $http.put(BASE_URL + 'me', user, {headers : authorization})
+                        .then(function (responce) {
+                            deferred.resolve(responce.data);
+                        }, function(error) {
+                            deferred.reject(error);
+                        });
+
+                    return deferred.promise;
+                }
+
                 function isAdmin() {
                     var currentUser = credentialsService.getLoggedUser();
                     return (currentUser != undefined) && (currentUser.isAdmin);
@@ -58,7 +84,9 @@
                     loginUser: loginUser,
                     logout: logout,
                     isAdmin : isAdmin,
-                    isProjectLeader : isProjectLeader
+                    isProjectLeader : isProjectLeader,
+                    changePassword : changePassword,
+                    editUser : editUser
                 }
             }]);
 }());
