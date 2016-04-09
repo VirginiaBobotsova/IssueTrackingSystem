@@ -1,0 +1,6 @@
+<header ng-include="'app/shared/header/guestHeaderView.html'" ng-if="!isLogged"></header>
+<header ng-include="'app/shared/header/userHeaderView.html'" ng-if="isLogged"></header>
+
+<div ng-include="'app/shared/article/guestView.html'" ng-if="!isLogged"></div>
+<div ng-include="'app/shared/article/dashboardUserView.html'" ng-if="isLogged || !isAdmin"></div>
+<div ng-include="'app/shared/article/dashboardAdminView.html'" ng-if="isLogged || isAdmin"></div>
