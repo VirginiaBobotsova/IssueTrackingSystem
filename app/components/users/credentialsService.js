@@ -1,6 +1,6 @@
 (function () {
     'use strict';
-    angular.module('issueTrackingSystem.users.credentialsService', [])
+    angular.module('issueTrackingSystem.users.credentialsService', ['ngStorage'])
     .factory('credentialsService',
         ['$sessionStorage', '$localStorage', function ($sessionStorage, $localStorage) {
             function saveTokenInLocalStorage(sessionToken, tokenType){

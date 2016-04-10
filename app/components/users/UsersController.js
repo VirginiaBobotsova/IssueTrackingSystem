@@ -1,7 +1,8 @@
 (function () {
 	'use strict';
-    angular.module('issueTrackingSystem.user', [])
-        .controller('userController', [
+    angular.module('issueTrackingSystem.users', ['issueTrackingSystem.users.userService',
+        'issueTrackingSystem.users.credentialsService'])
+        .controller('usersController', [
             '$scope',
             '$timeout',
             '$location',
@@ -15,6 +16,7 @@
                 $scope.editUser = credentialsService.getLoggedUser();
                 $scope.changeUserPassword = changeUserPassword;
                 $scope.editUserProfile = editUserProfile;
+                $scope.logoutUser = logoutUser;
 
                 function changeUserPassword(user, password, changePasswordForm) {
                     userService.changePassword(password)
@@ -38,6 +40,18 @@
                         }, function (error) {
                             toaster.pop('error', 'Edit profile error!', error.data.message, defaultNotificationTimeout);
                         })
+                }
+
+                function logoutUser() {
+                    userService.logout()
+                    .then(function (data) {
+                        credentialsService.deleteCredentials();
+                        toaster.pop('success', 'Logout successful!', defaultNotificationTimeout);
+                        redirectToHome(defaultRedirectTimeout);
+                    }, function (error) {
+                        toaster.pop('error', 'Logout error!', error.data.message, defaultNotificationTimeout);
+                        redirectToHome(defaultRedirectTimeout);
+                    })
                 }
 
                 function redirectToHome(time) {

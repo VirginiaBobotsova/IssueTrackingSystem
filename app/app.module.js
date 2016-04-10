@@ -1,7 +1,7 @@
-'use strict';
+(function () {
+    'use strict';
 
-var issueTrackingSystemApp = angular
-    .module('issueTrackingSystem', ['issueTrackingSystem.routes'])
+    angular.module('issueTrackingSystem', ['issueTrackingSystem.routes'])
+        .constant('BASE_URL', '');
 
-
-    .constant('BASE_URL', '');
+}());

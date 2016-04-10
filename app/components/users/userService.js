@@ -1,6 +1,6 @@
 (function () {
 	'use strict';
-    angular.module('userService', ['issueTrackingSystem.users.credentialsService'])
+    angular.module('issueTrackingSystem.users.userService', ['issueTrackingSystem.users.credentialsService'])
         .factory('userService', [
             '$http',
             '$q',
@@ -36,7 +36,16 @@
                 }
 
                 function logout() {
+                    var authorization = credentialsService.getAuthorization();
+                    var deferred = $q.defer();
+                    $http.post(BASE_URL + 'users/Logout', {headers : authorization})
+                        .then(function(responce) {
+                            deferred.resolve(responce);
+                        }, function (error) {
+                            deferred.reject(error);
+                        });
 
+                    return deferred.promise;
                 }
 
                 function getLoggedUserData() {
