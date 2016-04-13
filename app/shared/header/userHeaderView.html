@@ -1,14 +1,35 @@
-<nav class="navbar navbar-default navbar-static-top">
+<nav class="navbar navbar-default navbar-static-top" >
     <div class="container-fluid">
         <div class="navbar-header">
             <a class="navbar-brand" href="#/">Issue Tracking System</a>
         </div>
 
-        <div class="collapse navbar-collapse pull-right" id="bs-example-navbar-collapse-1">
+        <div class="collapse navbar-collapse pull-right" id="bs-example-navbar-collapse-1" ng-controller="homeController">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="#/">Home <span class="sr-only">(current)</span></a></li>
-                <li><a href="#loginUsername">Login</a></li>
-                <li><a href="#registerUsername">Register</a></li>
+                <li>
+                    <div ng-controller="commonController">
+                        <!-- Simple dropdown -->
+                        <span uib-dropdown on-toggle="toggled(open)">
+                          <a href id="simple-dropdown" uib-dropdown-toggle>
+                              Profile
+                          </a>
+                          <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="simple-dropdown">
+                              <li ng-redirect-to="/profile">Edit profile</li>
+                              <li ng-redirect-to="/profile/password">Change password</li>
+                          </ul>
+                        </span>
+                    </div>
+                     <!-- <a href id="simple-dropdown" uib-dropdown-toggle>Profile
+                          <span uib-dropdown on-toggle="toggled(open)">
+                          <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="simple-dropdown">
+                              <li ng-repeat="choice in items">
+                                  <a href>{{choice}}</a>
+                              </li>
+                          </ul>
+                          </span>
+                      </a>-->
+                </li>
+                <li ng-redirect-to="/profile">Logout</li>
             </ul>
         </div>
     </div>

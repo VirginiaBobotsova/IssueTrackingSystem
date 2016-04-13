@@ -1,19 +1,24 @@
 (function () {
 	'use strict';
-    angular.module('issueTrackingSystem.users', ['issueTrackingSystem.users.userService',
-        'issueTrackingSystem.users.credentialsService'])
+    angular.module('issueTrackingSystem.users', ['issueTrackingSystem.users.userService', 'issueTrackingSystem.users.identity'])
         .controller('usersController', [
             '$scope',
             '$timeout',
             '$location',
             'userService',
-            'credentialsService',
+            'identity',
             'toaster',
-            function ($scope, $timeout, $location, userService, credentialsService, toaster) {
+            function ($scope, $timeout, $location, userService, identity, toaster) {
                 var defaultNotificationTimeout = 2000,
                     defaultRedirectTimeout = 1000;
 
-                $scope.editUser = credentialsService.getLoggedUser();
+                //$scope.editUser = credentialsService.getLoggedUser();
+                identity.getCurrentUser()
+                    .then(function(user) {
+                        $scope.currentUser = user;
+                    });
+
+                $scope.isAuthenticated = identity.isAuthenticated();
                 $scope.changeUserPassword = changeUserPassword;
                 $scope.editUserProfile = editUserProfile;
                 $scope.logoutUser = logoutUser;
@@ -45,7 +50,7 @@
                 function logoutUser() {
                     userService.logout()
                     .then(function (data) {
-                        credentialsService.deleteCredentials();
+                        //credentialsService.deleteCredentials();
                         toaster.pop('success', 'Logout successful!', defaultNotificationTimeout);
                         redirectToHome(defaultRedirectTimeout);
                     }, function (error) {

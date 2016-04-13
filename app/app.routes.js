@@ -4,7 +4,9 @@
         'ngRoute',
         'issueTrackingSystem.users.userService',
         'issueTrackingSystem.home',
-        'issueTrackingSystem.users'])
+        'issueTrackingSystem.users',
+        'issueTrackingSystem.issues',
+        'issueTrackingSystem.common'])
     .config(function ($routeProvider) {
         $routeProvider
             .when('/', {
@@ -12,30 +14,30 @@
                 controller: 'homeController'
             })
             .when('/logout', {
-                templateUrl: 'components/users/logout.html',
+                templateUrl: 'app/components/users/logout.html',
                 controller: 'usersController'
             })
             .when('/profile', {
-                templateUrl: 'components/users/edit-profile.html',
-                controller: 'usersController',
-                resolve:{
-                    isLogged: function($location, $sessionStorage, $localStorage){
-                        if(!$sessionStorage.authorization && !$localStorage.authorization){
-                            $location.path('/');
-                        }
-                    }
-                }
+                templateUrl: 'app/components/users/edit-profile.html',
+                controller: 'usersController'
+                //resolve:{
+                    //isLogged: function($location, $sessionStorage, $localStorage){
+                        //if(!$sessionStorage.authorization && !$localStorage.authorization){
+                            //$location.path('/');
+                        //}
+                    //}
+                //}
             })
             .when('/profile/password', {
                 templateUrl: 'components/users/change-password.html',
-                controller: 'UserController',
-                resolve:{
-                    isLogged: function($location, $sessionStorage, $localStorage){
-                        if(!$sessionStorage.authorization && !$localStorage.authorization){
-                            $location.path('/');
-                        }
-                    }
-                }
+                controller: 'UserController'
+                //resolve:{
+                    //isLogged: function($location, $sessionStorage, $localStorage){
+                        //if(!$sessionStorage.authorization && !$localStorage.authorization){
+                           // $location.path('/');
+                //        }
+                  //  }
+                //}
             })
             .otherwise({
                 redirectTo: '/'
