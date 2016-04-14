@@ -29,7 +29,7 @@
                 //}
             })
             .when('/profile/password', {
-                templateUrl: 'components/users/change-password.html',
+                templateUrl: 'components/users/templates/change-password.html',
                 controller: 'UserController'
                 //resolve:{
                     //isLogged: function($location, $sessionStorage, $localStorage){

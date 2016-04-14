@@ -12,7 +12,12 @@
                 eeeeeee
             </div>
             <div class="col-md-4 col-md-offset-1" ng-controller="issuesController">
-                <div id="grid1" ui-grid="{ data: myData }" class="grid" ng-click="selectGridRow()"></div>
+                <div ui-grid="gridOptions" class="grid" ng-click="selectGridRow()"></div>
+                <p>Current page:
+                    <input type="number" min="1" max="{{ pagination.getTotalPages() }}" ng-model="pagination.pageNumber" ng-change="load()">of {{ pagination.getTotalPages() }}
+                </p>
+                <button type="button" class="btn btn-success" ng-click="pagination.previousPage()">previous page</button>
+                <button type="button" class="btn btn-success" ng-click="pagination.nextPage()">next page</button>
             </div>
         </div>
 </div>

@@ -1,24 +1,38 @@
 (function () {
 	'use strict';
-    angular.module('issueTrackingSystem.users', ['issueTrackingSystem.users.userService', 'issueTrackingSystem.users.identity'])
+    angular.module('issueTrackingSystem.users', [
+        'issueTrackingSystem.users.userService',
+        'issueTrackingSystem.users.identity',
+        'issueTrackingSystem.users.authentication'])
         .controller('usersController', [
             '$scope',
             '$timeout',
             '$location',
             'userService',
-            'identity',
+            'identificationService',
+            'authenticationService',
             'toaster',
-            function ($scope, $timeout, $location, userService, identity, toaster) {
+            function (
+                $scope,
+                $timeout,
+                $location,
+                userService,
+                identificationService,
+                authenticationService,
+                toaster) {
                 var defaultNotificationTimeout = 2000,
                     defaultRedirectTimeout = 1000;
 
-                //$scope.editUser = credentialsService.getLoggedUser();
-                identity.getCurrentUser()
+                identificationService.getCurrentUser()
                     .then(function(user) {
                         $scope.currentUser = user;
                     });
 
-                $scope.isAuthenticated = identity.isAuthenticated();
+                identificationService.isAdmin()
+                    .then(function(data) {
+                        $scope.isAdmin = data;
+                    });
+
                 $scope.changeUserPassword = changeUserPassword;
                 $scope.editUserProfile = editUserProfile;
                 $scope.logoutUser = logoutUser;
@@ -48,9 +62,9 @@
                 }
 
                 function logoutUser() {
-                    userService.logout()
+                    authenticationService.logout()
                     .then(function (data) {
-                        //credentialsService.deleteCredentials();
+                        identificationService.removeCookie();
                         toaster.pop('success', 'Logout successful!', defaultNotificationTimeout);
                         redirectToHome(defaultRedirectTimeout);
                     }, function (error) {
