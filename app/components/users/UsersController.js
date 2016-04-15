@@ -2,14 +2,12 @@
 	'use strict';
     angular.module('issueTrackingSystem.users', [
         'issueTrackingSystem.users.userService',
-        'issueTrackingSystem.users.identity',
         'issueTrackingSystem.users.authentication'])
         .controller('usersController', [
             '$scope',
             '$timeout',
             '$location',
             'userService',
-            'identificationService',
             'authenticationService',
             'toaster',
             function (
@@ -17,18 +15,17 @@
                 $timeout,
                 $location,
                 userService,
-                identificationService,
                 authenticationService,
                 toaster) {
                 var defaultNotificationTimeout = 2000,
                     defaultRedirectTimeout = 1000;
 
-                identificationService.getCurrentUser()
+                authenticationService.getCurrentUser()
                     .then(function(user) {
                         $scope.currentUser = user;
                     });
 
-                identificationService.isAdmin()
+                authenticationService.isAdministrator()
                     .then(function(data) {
                         $scope.isAdmin = data;
                     });
@@ -64,7 +61,6 @@
                 function logoutUser() {
                     authenticationService.logout()
                     .then(function (data) {
-                        identificationService.removeCookie();
                         toaster.pop('success', 'Logout successful!', defaultNotificationTimeout);
                         redirectToHome(defaultRedirectTimeout);
                     }, function (error) {

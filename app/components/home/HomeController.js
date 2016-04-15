@@ -3,7 +3,8 @@
     angular.module('issueTrackingSystem.home', [
         'issueTrackingSystem.users.userService',
         'issueTrackingSystem.users.authentication',
-        'issueTrackingSystem.users.identity',
+        'issueTrackingSystem.issues.issuesService',
+        'issueTrackingSystem.projects.projectsService',
         'toaster'])
         .controller('homeController', [
             '$scope',
@@ -13,23 +14,25 @@
             '$location',
             'userService',
             'authenticationService',
-            'identificationService',
+            'issuesService',
+            'projectsService',
             'toaster',
-            function ($scope, $log, $route, $timeout, $location, userService, authenticationService, identificationService, toaster) {
+            function (
+                $scope,
+                $log,
+                $route,
+                $timeout,
+                $location,
+                userService,
+                authenticationService,
+                issuesService,
+                projectsService,
+                toaster) {
                 var defaultNotificationTimeout = 2000,
                     defaultReloadTimeout = 1000;
 
-                identificationService.userLogged()
-                    .then(function(data) {
-                        $scope.userLogged = data;
-                    });
-
-                identificationService.isAdmin()
-                    .then(function(data) {
-                        $scope.isAdmin = data;
-                    });
-
-                if(identificationService.userLogged()){
+                if(authenticationService.isAuthenticated()){
+                    $scope.userLogged = authenticationService.isAuthenticated();
                     attachUserIssuesAndProjects();
                     $scope.attachUserAssignedIssues = attachUserAssignedIssues();
                     $scope.addProjectRedirect = function () {
@@ -38,18 +41,20 @@
                     $scope.addIssueRedirect = function () {
                         $location.path('issues/add');
                     };
+                } else {
+                    $scope.register = register;
+                    $scope.login = login;
                 }
 
-                $scope.register = register;
-                $scope.login = login;
-                $scope.rememberMe = false;
-
                 function register(user, registerForm) {
-                    authenticationService.registerUser(user)
-                        .then(function (data) {
-                            identificationService.setCookie(data);
+                    authenticationService.register(user)
+                        .then(function (responce) {
                             $scope.registerForm.$setPristine();
-                            authenticationService.login(user)
+                            var loginData = {
+                                Username: responce.config.data.Email,
+                                Password: responce.config.data.Password
+                            };
+                            authenticationService.login(loginData)
                                 .then(function() {
                                     reloadRoute(defaultReloadTimeout);
                                     toaster.pop('success', 'Register successful!', null, defaultNotificationTimeout);
@@ -59,33 +64,22 @@
                         })
                 }
 
-                function login(user, loginForm) {
-                    authenticationService.loginUser(user)
+                function login(user) {
+                    authenticationService.login(user)
                         .then(function (data) {
-                            //if ($scope.rememberMe) {
-                                //$scope.$storage = credentialsService.saveTokenInLocalStorage(data.access_token, data.token_type);
-                            //} else {
-                                //$scope.$storage = credentialsService.saveTokenInSessionStorage(data.access_token, data.token_type);
-                            //}
-
-                            identificationService.setCookie('access_token', data.access_token);
-                            identificationService.getCurrentUser()
-                                .then(function (currentUser) {
-                                    var userString = JSON.stringify(currentUser.data);
-                                    identificationService.setCookie('user', userString);
-                                    reloadRoute(defaultReloadTimeout);
-                                    toaster.pop('success', 'Login successful!', defaultNotificationTimeout);
-                                    $scope.loginForm.$setPristine();
-                                }, function (error) {
-                                    toaster.pop('error', 'Login error!', defaultNotificationTimeout);
-                                });
-                    });
+                            authenticationService.getUserInfo();
+                            reloadRoute(defaultReloadTimeout);
+                            toaster.pop('success', 'Login successful!', null, defaultNotificationTimeout);
+                            $scope.loginForm.$setPristine();
+                        }, function (error) {
+                            toaster.pop('error', 'Login error!', null, defaultNotificationTimeout);
+                        });
                 }
 
                 function attachUserAssignedIssues(pageSize, pageNumber, orderBy){
                     issuesService.getCurrentUserIssues(pageSize, pageNumber, orderBy)
                         .then(function (issues) {
-                            $scope.issuePages = issues.data.totalPages;
+                            $scope.issuePages = issues.data.TotalPages;
                             $scope.issues = issues.data.Issues;
                         });
                 }
@@ -104,7 +98,7 @@
                                     });
                                 }
                             });
-                            identificationService.getCurrentUserId()
+                            authenticationService.getCurrentUserId()
                                 .then(function (id) {
                                     projectsService.getUserRelatedProjects(id)
                                         .then(function (userProjects) {
@@ -134,6 +128,11 @@
                         $route.reload();
                     }, time);
                 }
-            }
-        ])
+
+                function loadHome(time) {
+                    $timeout(function () {
+                        $location.path('/')
+                    }, time);
+                }
+            }]);
 }());

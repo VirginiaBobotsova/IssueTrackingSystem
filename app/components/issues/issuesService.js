@@ -9,12 +9,17 @@
                 var defaultPageSize = 3,
                     defaultPageNumber = 1;
 
+                function authHeader() {
+                    return {Authorization: sessionStorage['access_token']};
+                }
+
                 function getIssuesByGivenFilter(pageSize, pageNumber, filter) {
                     pageSize = pageSize || defaultPageSize;
                     pageNumber = pageNumber || defaultPageNumber;
                     filter = filter || '';
                     var deferred = $q.defer();
-                    $http.get(BASE_URL + 'issues/?pageSize=' + pageSize + '&pageNumber=' + pageNumber + '&filter=' + filter)
+                    $http.get(BASE_URL + 'issues/?pageSize=' + pageSize + '&pageNumber=' + pageNumber + '&filter=' + filter,
+                        {headers: authHeader()})
                         .then(function(response) {
                             deferred.resolve(response);
                         }, function(error) {
@@ -29,7 +34,8 @@
                     pageNumber = pageNumber || defaultPageNumber;
                     orderBy = orderBy || 'DueDate desc';
                     var deferred = $q.defer();
-                    $http.get(BASE_URL + 'issues/me?pageSize=' + pageSize + '&pageNumber=' + pageNumber + '&orderBy=' + orderBy)
+                    $http.get(BASE_URL + 'issues/me?pageSize=' + pageSize + '&pageNumber=' + pageNumber + '&orderBy=' + orderBy,
+                        {headers: authHeader()})
                         .then(function(response) {
                             deferred.resolve(response);
                         }, function(error) {
@@ -41,7 +47,8 @@
 
                 function getIssueById(id) {
                     var deferred = $q.defer();
-                    $http.get(BASE_URL + 'issues/' + id)
+                    $http.get(BASE_URL + 'issues/' + id,
+                        {headers: authHeader()})
                         .then(function (response) {
                             deferred.resolve(response);
                         }, function (error) {
@@ -54,7 +61,8 @@
                 function addIssue(data) {
                     data = manageLabels(data);
                     var deferred = $q.defer();
-                    $http.post(BASE_URL + 'issues', data)
+                    $http.post(BASE_URL + 'issues', data,
+                        {headers: authHeader()})
                         .then(function (response) {
                             deferred.resolve(response);
                         }, function (error) {
@@ -67,7 +75,8 @@
                 function editIssue(id, data) {
                     data = manageLabels(data);
                     var deferred = $q.defer();
-                    $http.put(BASE_URL + 'issues/' + id, data)
+                    $http.put(BASE_URL + 'issues/' + id, data,
+                        {headers: authHeader()})
                         .then(function (response) {
                             deferred.resolve(response)
                         }, function (error) {
@@ -79,7 +88,8 @@
 
                 function editIssueCurrentStatus(id, statusId) {
                     var deferred = $q.defer();
-                    $http.put(BASE_URL + 'issues/' + id + '/changestatus?statusid=' + statusId)
+                    $http.put(BASE_URL + 'issues/' + id + '/changestatus?statusid=' + statusId,
+                        {headers: authHeader()})
                         .then(function (response) {
                             deferred.resolve(response)
                         }, function (error) {
@@ -118,7 +128,8 @@
 
                 function getIssueComments(id){
                     var deferred = $q.defer();
-                    $http.get(BASE_URL + 'issues/' + id + '/comments')
+                    $http.get(BASE_URL + 'issues/' + id + '/comments',
+                        {headers: authHeader()})
                         .then(function (response) {
                             deferred.resolve(response);
                         }, function (error) {
@@ -129,8 +140,8 @@
 
                 function addComment(id, data){
                     var deferred = $q.defer();
-
-                    $http.post(BASE_URL + 'issues/' + id + '/comments', data)
+                    $http.post(BASE_URL + 'issues/' + id + '/comments', data,
+                        {headers: authHeader()})
                         .then(function (response) {
                             deferred.resolve(response);
                         }, function (error) {

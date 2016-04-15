@@ -6,10 +6,14 @@
             '$q',
             'BASE_URL',
             function ($http, $q, BASE_URL) {
+                function authHeader() {
+                    return {Authorization: sessionStorage['access_token']};
+                }
 
                 function getAllProjects() {
                     var deferred = $q.defer();
-                    $http.get(BASE_URL + 'projects')
+                    $http.get(BASE_URL + 'projects',
+                        {headers: authHeader()})
                         .then(function(response) {
                             deferred.resolve(response);
                         }, function(error) {
@@ -21,7 +25,8 @@
 
                 function getProjectById(id) {
                     var deferred = $q.defer();
-                    $http.get(BASE_URL + 'projects/' + id)
+                    $http.get(BASE_URL + 'projects/' + id,
+                        {headers: authHeader()})
                         .then(function (response) {
                             deferred.resolve(response);
                         }, function (error) {
@@ -35,7 +40,8 @@
                     data = managePrioritiesAndLabels(data);
                     data.ProjectKey = data.Name.match(/\b(\w)/g).join('');
                     var deferred = $q.defer();
-                    $http.post(BASE_URL + 'projects', data)
+                    $http.post(BASE_URL + 'projects', data,
+                        {headers: authHeader()})
                         .then(function (response) {
                             deferred.resolve(response);
                         }, function (error) {
@@ -48,7 +54,8 @@
                 function editProject(id, data) {
                     data = managePrioritiesAndLabels(data);
                     var deferred = $q.defer();
-                    $http.put(BASE_URL + 'projects/' + id, data)
+                    $http.put(BASE_URL + 'projects/' + id, data,
+                        {headers: authHeader()})
                         .then(function (response) {
                             deferred.resolve(response)
                         }, function (error) {
@@ -60,7 +67,8 @@
 
                 function getProjectIssues(id) {
                     var deferred = $q.defer();
-                    $http.put(BASE_URL + 'projects/' + id + 'issues')
+                    $http.put(BASE_URL + 'projects/' + id + 'issues',
+                        {headers: authHeader()})
                         .then(function (response) {
                             deferred.resolve(response.data)
                         }, function (error) {
@@ -135,6 +143,5 @@
                     getUserRelatedProjects : getUserRelatedProjects,
                     transformPrioritiesAndLabels : transformPrioritiesAndLabels
                 }
-        }])
-
+        }]);
 }());
