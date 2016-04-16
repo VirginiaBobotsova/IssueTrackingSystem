@@ -1,50 +1,49 @@
-
-
-    <div class="user-dashboard">
-        <button type="button" class="btn-success btn-md" ng-click="addIssueRedirect">Dashboard</button>
-        <button type="button" class="btn-success btn-md" ng-click="addProjectRedirect">Projects</button>
-        <br>
-        <h1>Dashboard</h1>
-        <h3>Affiliated Projects</h3>
-        <div class="row">
-            <div class="col-md-4 col-md-offset-1">
-                <a href="#/projects/{{project.Id}}" class="row" ng-repeat="project in projects">{{project.Name}}</a>
-            </div>
-            <div class="col-md-4 col-md-offset-1">
-                <label for="pageSize">Issues per page</label>
-                <select ng-change="attachUserAssignedIssues(pageSize, pageNumber, orderBy)" ng-model="pageSize" id="pageSize">
-                    <option ng-selected="true" value="3">3</option>
-                    <option value="6">6</option>
-                    <option value="9">9</option>
-                </select>
-                <label for="orderBy">Issue order</label>
-                <select ng-change="attachUserAssignedIssues(pageSize, pageNumber, orderBy)" ng-model="orderBy" id="orderBy">
-                    <option value="Id">Id &#x2191</option>
-                    <option value="Id desc">Id &#x2193</option>
-                    <option value="DueDate">Due Date &#x2191</option>
-                    <option ng-selected="true" value="DueDate desc">Due Date &#x2193</option>
-                </select>
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th>Issue</th>
-                        <th>Description</th>
-                        <th>Project</th>
-                        <th>Due Date</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr class ng-repeat="issue in issues">
-                        <td><a href="#/issues/{{issue.Id}}">{{issue.Title}}</a></td>
-                        <td>{{issue.Description}}</td>
-                        <td><a href="#/projects/{{issue.Project.Id}}">{{issue.Project.Name}}</a></td>
-                        <td>{{issue.DueDate}}</td>
-                    </tr>
-                    </tbody>
-                </table>
-                <ul ng-if="issuePages>1" class="pagination">
-                    <li ng-repeat="pageNumber in issuePages | range" ><a ng-click="attachUserAssignedIssues(pageSize, pageNumber, orderBy)" href="#/">{{pageNumber}}</a></li>
-                </ul>
-            </div>
+<div class="user-dashboard" ng-controller="homeController">
+    <button type="button" class="btn-success btn-md" ng-click="addIssueRedirect">Dashboard</button>
+    <button type="button" class="btn-success btn-md" ng-click="addProjectRedirect">Projects</button>
+    <br>
+    <h1>Dashboard</h1>
+    <div class="row">
+        <div class="col-sm-4 col-sm-offset-1 col-md-3 col-md-offset-1 col-lg-3 col-lg-offset-1">
+            <h3>Affiliated Projects</h3>
+            <a href="#/projects/{{project.Id}}" class="row" ng-repeat="project in projects">{{project.Name}}</a>
         </div>
+        <div class="col-sm-6 col-md-6 col-lg-6 col-md-offset-1">
+            <label for="pageSize">Issues per page</label>
+            <select ng-change="attachUserAssignedIssues(pageSize, page, pageOrder)" ng-model="pageSize" id="pageSize">
+                <option ng-selected="true" value="3">3</option>
+                <option value="5">5</option>
+                <option value="10">10</option>
+            </select>
+            <label for="pageOrder">Issue order</label>
+            <select ng-change="attachUserAssignedIssues(pageSize, page, pageOrder)" ng-model="pageOrder" id="pageOrder">
+                <option value="Id">Id &#x2191</option>
+                <option value="Id desc">Id &#x2193</option>
+                <option value="DueDate">Due Date &#x2191</option>
+                <option ng-selected="true" value="DueDate desc">Due Date &#x2193</option>
+            </select>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Issue</th>
+                    <th>Description</th>
+                    <th>Project</th>
+                    <th>Due Date</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class ng-repeat="issue in userIssues">
+                    <td><a href="#/issues/{{issue.Id}}">{{issue.Title}}</a></td>
+                    <td>{{issue.Description}}</td>
+                    <td><a href="#/projects/{{issue.Project.Id}}">{{issue.Project.Name}}</a></td>
+                    <td>{{issue.DueDate}}</td>
+                </tr>
+                </tbody>
+            </table>
+            <ul ng-if="issuePages>1" class="pagination">
+                <li ng-repeat="page in issuePages | range" ><a ng-click="attachUserAssignedIssues(pageSize, page, pageOrder)" href="#/">{{page}}</a></li>
+            </ul>
+        </div>
+    </div>
 </div>
+

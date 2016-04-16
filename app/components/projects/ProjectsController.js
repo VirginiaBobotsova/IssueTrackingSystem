@@ -23,9 +23,6 @@
                 issuesService,
                 authenticationService,
                 toaster) {
-                /**
-                 *  Editing project
-                 */
                 if($location.path().match('\/(?!index\.html)(projects\/[0-9]+\/edit)')){
                     projectsService.getProjectById($routeParams.id)
                         .then(function (project) {

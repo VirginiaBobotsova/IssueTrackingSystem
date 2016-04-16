@@ -21,7 +21,7 @@
                     $http.get(BASE_URL + 'issues/?pageSize=' + pageSize + '&pageNumber=' + pageNumber + '&filter=' + filter,
                         {headers: authHeader()})
                         .then(function(response) {
-                            deferred.resolve(response);
+                            deferred.resolve(response.data);
                         }, function(error) {
                             deferred.reject(error);
                         });
@@ -29,15 +29,16 @@
                     return deferred.promise;
                 }
 
-                function getCurrentUserIssues(pageSize, pageNumber, orderBy) {
+                function getCurrentUserIssues(pageSize, pageNumber) {
                     pageSize = pageSize || defaultPageSize;
                     pageNumber = pageNumber || defaultPageNumber;
-                    orderBy = orderBy || 'DueDate desc';
+                    var orderBy = orderBy || 'DueDate desc';
                     var deferred = $q.defer();
                     $http.get(BASE_URL + 'issues/me?pageSize=' + pageSize + '&pageNumber=' + pageNumber + '&orderBy=' + orderBy,
                         {headers: authHeader()})
                         .then(function(response) {
-                            deferred.resolve(response);
+                            console.log(response)
+                            deferred.resolve(response.data);
                         }, function(error) {
                             deferred.reject(error);
                         });
@@ -50,7 +51,7 @@
                     $http.get(BASE_URL + 'issues/' + id,
                         {headers: authHeader()})
                         .then(function (response) {
-                            deferred.resolve(response);
+                            deferred.resolve(response.data);
                         }, function (error) {
                             deferred.reject(error);
                         });

@@ -12,7 +12,7 @@
             '$route',
             '$timeout',
             '$location',
-            'userService',
+            'usersService',
             'authenticationService',
             'issuesService',
             'projectsService',
@@ -23,7 +23,7 @@
                 $route,
                 $timeout,
                 $location,
-                userService,
+                usersService,
                 authenticationService,
                 issuesService,
                 projectsService,
@@ -76,20 +76,22 @@
                         });
                 }
 
-                function attachUserAssignedIssues(pageSize, pageNumber, orderBy){
-                    issuesService.getCurrentUserIssues(pageSize, pageNumber, orderBy)
-                        .then(function (issues) {
-                            $scope.issuePages = issues.data.TotalPages;
-                            $scope.issues = issues.data.Issues;
+                function attachUserAssignedIssues(pageSize, pageNumber){
+                    issuesService.getCurrentUserIssues(pageSize, pageNumber)
+                        .then(function (data) {
+                            $scope.totalPages = data.TotalPages;
+                            $scope.userIssues = data.Issues;
+                        }, function (error) {
+
                         });
                 }
 
                 function attachUserAffiliatedProjects(){
-                    issuesService.getCurrentUserIssues(999, 1)
-                        .then(function (issues) {
+                    issuesService.getCurrentUserIssues(5, 1)
+                        .then(function (data) {
                             var projects = [];
-                            issues.data.Issues.forEach(function (issue) {
-                                if(!projects.find(function (project) {
+                            data.Issues.forEach(function (issue) {
+                                if(!projects.filter(function (project) {
                                         return project.Id === issue.Project.Id;
                                     })){
                                     projects.push({
@@ -99,8 +101,8 @@
                                 }
                             });
                             authenticationService.getCurrentUserId()
-                                .then(function (id) {
-                                    projectsService.getUserRelatedProjects(id)
+                                .then(function (data) {
+                                    projectsService.getUserRelatedProjects(data)
                                         .then(function (userProjects) {
                                             userProjects.forEach(function (pr) {
                                                 if(!projects.find(function (project) {

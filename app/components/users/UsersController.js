@@ -1,20 +1,20 @@
 (function () {
 	'use strict';
     angular.module('issueTrackingSystem.users', [
-        'issueTrackingSystem.users.userService',
+        'issueTrackingSystem.users.usersService',
         'issueTrackingSystem.users.authentication'])
         .controller('usersController', [
             '$scope',
             '$timeout',
             '$location',
-            'userService',
+            'usersService',
             'authenticationService',
             'toaster',
             function (
                 $scope,
                 $timeout,
                 $location,
-                userService,
+                usersService,
                 authenticationService,
                 toaster) {
                 var defaultNotificationTimeout = 2000,
@@ -35,7 +35,7 @@
                 $scope.logoutUser = logoutUser;
 
                 function changeUserPassword(user, password, changePasswordForm) {
-                    userService.changePassword(password)
+                    usersService.changePassword(password)
                         .then(function(data) {
                             $scope.changePasswordForm.$setPristine();
                             toaster.pop('success', 'Password change successful!', data.message, defaultNotificationTimeout);
@@ -46,7 +46,7 @@
                 }
 
                 function editUserProfile(user, editProfileForm) {
-                    userService.editUser(user)
+                    usersService.editUser(user)
                         .then(function (data) {
                             $scope.editProfileForm.$setPristine();
                             toaster.pop('success', 'Edit successful!', data.message, defaultNotificationTimeout);
