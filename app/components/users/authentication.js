@@ -75,9 +75,9 @@
                 function getAllUsers() {
                     var deferred = $q.defer();
 
-                    $http.get(BASE_URL + 'users', {
-                        headers: authHeader()
-                    }).then(function (users) {
+                    $http.get(BASE_URL + 'users',
+                        {headers: authHeader()})
+                        .then(function (users) {
                         deferred.resolve(users.data);
                     }, function (error) {
                         deferred.reject(error);
@@ -98,6 +98,18 @@
                     return deferred.promise;
                 }
 
+                function logout(){
+                    var deferred = $q.defer();
+                    $http.post(BASE_URL + 'api/account/logout',
+                        {headers: authHeader()})
+                        .then(function (response) {
+                            deferred.resolve(response.data);
+                        }, function (error) {
+                            deferred.reject(error);
+                        });
+                    return deferred.promise;
+                }
+
                 return {
                     login: login,
                     register: register,
@@ -106,7 +118,8 @@
                     isAuthenticated: isAuthenticated,
                     isAdministrator: isAdministrator,
                     getAllUsers: getAllUsers,
-                    getCurrentUserId: getCurrentUserId
+                    getCurrentUserId: getCurrentUserId,
+                    logout : logout
                 }
             }])
 })();

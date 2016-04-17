@@ -1,8 +1,6 @@
 (function () {
 	'use strict';
-    angular.module('issueTrackingSystem.users', [
-        'issueTrackingSystem.users.usersService',
-        'issueTrackingSystem.users.authentication'])
+    angular.module('issueTrackingSystem.users', [])
         .controller('usersController', [
             '$scope',
             '$timeout',
@@ -20,6 +18,23 @@
                 var defaultNotificationTimeout = 2000,
                     defaultRedirectTimeout = 1000;
 
+                if($location.path() == '/users'){
+                    getAllUsers();
+                }
+
+                if($location.path() === '/users/profile/password'){
+                    changeUserPassword();
+                }
+
+                if($location.path() === '/users/profile'){
+                    editUserProfile();
+                 }
+
+                if($location.path() === '/logout'){
+                    logoutUser();
+                }
+
+
                 authenticationService.getCurrentUser()
                     .then(function(user) {
                         $scope.currentUser = user;
@@ -30,43 +45,48 @@
                         $scope.isAdmin = data;
                     });
 
-                $scope.changeUserPassword = changeUserPassword;
-                $scope.editUserProfile = editUserProfile;
-                $scope.logoutUser = logoutUser;
-
-                function changeUserPassword(user, password, changePasswordForm) {
-                    usersService.changePassword(password)
-                        .then(function(data) {
-                            $scope.changePasswordForm.$setPristine();
-                            toaster.pop('success', 'Password change successful!', data.message, defaultNotificationTimeout);
-                            redirectToHome(defaultRedirectTimeout);
-                        }, function(error) {
-                            toaster.pop('error', 'Change password error!', error.data.message, defaultNotificationTimeout);
-                        })
+                function getAllUsers() {
+                    usersService.getUsers()
+                        .then(function (users) {
+                            $scope.users = users;
+                        }, function (error) {
+                            toaster.pop('error', 'Error', defaultNotificationTimeout)
+                        });
                 }
 
-                function editUserProfile(user, editProfileForm) {
-                    usersService.editUser(user)
-                        .then(function (data) {
-                            $scope.editProfileForm.$setPristine();
-                            toaster.pop('success', 'Edit successful!', data.message, defaultNotificationTimeout);
-                            $scope.editUser.name = user.name;
-                            $scope.editUser.email = user.email;
-                            redirectToWall($scope.editUser.username, defaultRedirectTimeout)
-                        }, function (error) {
-                            toaster.pop('error', 'Edit profile error!', error.data.message, defaultNotificationTimeout);
-                        })
+                function changeUserPassword() {
+                    $scope.editPassword = function (user) {
+                        usersService.editPassword(user)
+                            .then(function (success) {
+                                toaster.pop('success', 'Successfully changed password', defaultNotificationTimeout);
+                                redirectToHome(defaultRedirectTimeout);
+                            }, function (error) {
+                                toaster.pop('error', 'Error', defaultNotificationTimeout)
+                            });
+                    };
+                }
+
+                function editUserProfile() {
+                    $scope.editUser = function (user) {
+                        usersService.editUser(user)
+                            .then(function (response) {
+                                toaster.pop('success', '', defaultNotificationTimeout);
+                                redirectToHome(defaultRedirectTimeout)
+                                  }, function (error) {
+                                      toaster.pop('error', 'Error', defaultNotificationTimeout);
+                                  });
+                          };
                 }
 
                 function logoutUser() {
                     authenticationService.logout()
-                    .then(function (data) {
-                        toaster.pop('success', 'Logout successful!', defaultNotificationTimeout);
-                        redirectToHome(defaultRedirectTimeout);
-                    }, function (error) {
-                        toaster.pop('error', 'Logout error!', error.data.message, defaultNotificationTimeout);
-                        redirectToHome(defaultRedirectTimeout);
-                    })
+                        .then(function (data) {
+                            toaster.pop('success', 'Logout successful!', defaultNotificationTimeout);
+                            redirectToHome(defaultRedirectTimeout);
+                        }, function (error) {
+                            toaster.pop('error', 'Logout error!', defaultNotificationTimeout);
+                            redirectToHome(defaultRedirectTimeout);
+                        })
                 }
 
                 function redirectToHome(time) {
@@ -74,12 +94,5 @@
                         $location.path('/');
                     }, time);
                 }
-
-                function redirectToWall(user, time) {
-                    $timeout(function () {
-                        $location.path('/users/' + user)
-                    }, time);
-                }
-            }
-        ])
+            }])
 }());

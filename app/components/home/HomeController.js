@@ -1,11 +1,11 @@
 (function () {
 	'use strict';
     angular.module('issueTrackingSystem.home', [
-        'issueTrackingSystem.users.userService',
-        'issueTrackingSystem.users.authentication',
-        'issueTrackingSystem.issues.issuesService',
-        'issueTrackingSystem.projects.projectsService',
-        'toaster'])
+            'issueTrackingSystem.users.usersService',
+            'issueTrackingSystem.projects.projectsService',
+            'issueTrackingSystem.issues.issuesService',
+            'issueTrackingSystem.users.authentication',
+            'toaster'])
         .controller('homeController', [
             '$scope',
             '$log',
@@ -131,7 +131,7 @@
                     }, time);
                 }
 
-                function loadHome(time) {
+                function reloadHome(time) {
                     $timeout(function () {
                         $location.path('/')
                     }, time);
