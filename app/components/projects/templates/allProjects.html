@@ -1,0 +1,15 @@
+<div>
+    <header ng-include="'app/shared/header/userHeaderView.html'" ng-if="userLogged"></header>
+    <div class="user-dashboard">
+        <h1>Projects</h1>
+        <br />
+            <div class="item panel" ng-repeat="project in projects">
+                <p>
+                    {{project.Name}}
+                    <a class="btn btn-sm btn-success" href="#/projects/{{project.Id}}">view</a>
+                </p>
+            </div>
+        <a class="btn btn-md btn-success" href="#/projects/add">Add Project</a>
+    </div>
+</div>
+

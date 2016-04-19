@@ -1,5 +1,5 @@
 (function () {
-	angular.module('ProjectsController', [])
+	angular.module('issueTrackingSystem.projects', [])
         .controller('projectsController', ['$scope',
             '$routeParams',
             '$location',
@@ -86,7 +86,7 @@
                     projectsService.getProjectById($routeParams.id)
                         .then(function (project) {
                             if(!$scope.isAdministrator){
-                                authenticationService.getUserInfo()
+                                authenticationService.getCurrentUserId()
                                     .then(function (id) {
                                         $scope.isLead = (project.data.Lead.Id === id);
 

@@ -40,16 +40,6 @@
                     return deferred.promise;
                 }
 
-                function changePassword(changePasswordData) {
-                    $http.post(BASE_URL + 'api/account/changePassword', changePasswordData, {headers: authHeader()})
-                        .then(function (response) {
-                            notifyService.showInfo('Successfully password change');
-                            $location.path('/');
-                        }, function (error) {
-                            notifyService.showError('Unsuccessful password change', error);
-                        })
-                }
-
                 function isAuthenticated() {
                     return sessionStorage['access_token'];
                 }
@@ -113,7 +103,6 @@
                 return {
                     login: login,
                     register: register,
-                    changePassword: changePassword,
                     getUserInfo: getUserInfo,
                     isAuthenticated: isAuthenticated,
                     isAdministrator: isAdministrator,

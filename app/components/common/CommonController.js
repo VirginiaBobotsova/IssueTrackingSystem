@@ -18,5 +18,10 @@
 
             $scope.appendToEl = angular.element(document.querySelector('#dropdown-long-content'));
         }])
+        .controller('modalController', ['$scope', '$modal', function($scope, $modal) {
+            $modal.open({
+                templateUrl : 'app/components/projects/templates/addProject.html',
+                windowTemplateUrl: 'app/components/projects/templates/allProjects.html'})
+        }])
 
 }());

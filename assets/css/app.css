@@ -34,6 +34,15 @@ body>div>div.row {
     margin-bottom: 20px;
 }
 
+.nav {
+    margin-top: 20px;
+    margin-right: 50px;
+}
+
+.user-nav {
+    margin-left: 50px;
+}
+
 .user-dashboard {
     margin: 160px;
     margin-top: 30px;
@@ -50,12 +59,26 @@ body>div>div.row {
     margin-top: 20px;
 }
 
+.item p {
+    padding-left: 70px;
+    padding-top: 10px;
+}
+
+.add-form {
+    padding: 100px;
+}
+
 button {
     margin-top: 20px;
     margin-left: 20px;
     float: left;
 }
 
+.comments-box {
+    padding-left: 100px;
+    padding-right: 100px;
+
+}
 
 .navbar img {
     width: 30px;

@@ -29,6 +29,7 @@
                         {headers: authHeader()})
                         .then(function (response) {
                             deferred.resolve(response);
+                            console.log(response)
                         }, function (error) {
                             deferred.reject(error);
                         });

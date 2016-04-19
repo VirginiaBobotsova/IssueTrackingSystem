@@ -35,15 +35,15 @@
                 }
 
 
-                authenticationService.getCurrentUser()
-                    .then(function(user) {
-                        $scope.currentUser = user;
-                    });
+                //authenticationService.getCurrentUser()
+                  //  .then(function(user) {
+                    //    $scope.currentUser = user;
+                    //});
 
-                authenticationService.isAdministrator()
-                    .then(function(data) {
-                        $scope.isAdmin = data;
-                    });
+               // authenticationService.isAdministrator()
+                 //   .then(function(data) {
+                   //     $scope.isAdmin = data;
+                    //});
 
                 function getAllUsers() {
                     usersService.getUsers()
@@ -81,8 +81,10 @@
                 function logoutUser() {
                     authenticationService.logout()
                         .then(function (data) {
+                            $scope.sessionStorage.removeItem('access_token');
+                            $scope.sessionStorage.removeItem('user');
                             toaster.pop('success', 'Logout successful!', defaultNotificationTimeout);
-                            redirectToHome(defaultRedirectTimeout);
+                            $route.reload();
                         }, function (error) {
                             toaster.pop('error', 'Logout error!', defaultNotificationTimeout);
                             redirectToHome(defaultRedirectTimeout);

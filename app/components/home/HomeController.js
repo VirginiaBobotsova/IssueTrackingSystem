@@ -5,6 +5,7 @@
             'issueTrackingSystem.projects.projectsService',
             'issueTrackingSystem.issues.issuesService',
             'issueTrackingSystem.users.authentication',
+            'issueTrackingSystem.common.directives',
             'toaster'])
         .controller('homeController', [
             '$scope',
@@ -35,12 +36,12 @@
                     $scope.userLogged = authenticationService.isAuthenticated();
                     attachUserIssuesAndProjects();
                     $scope.attachUserAssignedIssues = attachUserAssignedIssues();
-                    $scope.addProjectRedirect = function () {
-                        $location.path('projects/add');
-                    };
-                    $scope.addIssueRedirect = function () {
-                        $location.path('issues/add');
-                    };
+                   // $scope.addProjectRedirect = function () {
+                     //   $location.path('projects/add');
+                    //};
+                    //$scope.addIssueRedirect = function () {
+                      //  $location.path('issues/add');
+                    //};
                 } else {
                     $scope.register = register;
                     $scope.login = login;
@@ -136,5 +137,6 @@
                         $location.path('/')
                     }, time);
                 }
-            }]);
+            }])
+
 }());

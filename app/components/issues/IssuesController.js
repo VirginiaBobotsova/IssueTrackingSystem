@@ -54,23 +54,27 @@
                 }
 
                 function getIssues() {
-                    issuesService.getCurrentUserIssues($routeParams.id)
-                        .then(function (issue) {
+                    issuesService.getCurrentUserIssues()
+                        .then(function (data) {
                             authenticationService.getCurrentUserId()
                                 .then(function (id) {
-                                    projectsService.getProjectById(issue.data.Project.Id)
-                                        .then(function (project) {
-                                            $scope.isLead = (project.data.Lead.Id === id);
-                                            $scope.isAssignee = (issue.data.Assignee.Id === id);
-                                        });
+                                    data.Issues.forEach(function (issue) {
+                                        projectsService.getProjectById(issue.Project.Id)
+                                            .then(function (response) {
+                                                $scope.isLead = (response.data.Lead.Id === id);
+                                                $scope.isAssignee = (issue.Assignee.Id === id);
+                                                $scope.isAdmin = issue.Assignee.isAdmin;
+                                            });
+                                        $scope.issue = issuesService.transformLabels(issue);
+                                        issuesService.getIssueComments(issue.Id)
+                                            .then(function (comments) {
+                                                $scope.issue.Comments = comments.data;
+                                            }, function (error) {
+                                                deferred.reject(error);
+                                            });
+                                    })
                                 });
-                            $scope.issue = issuesService.transformLabels(issue.data);
-                            issuesService.getIssueComments(issue.data.Id)
-                                .then(function (comments) {
-                                    $scope.issue.Comments = comments.data;
-                                }, function (error) {
-                                    deferred.reject(error);
-                                });
+
                         });
                     $scope.addComment = function (comment) {
                         issuesService.addComment($routeParams.id, comment)

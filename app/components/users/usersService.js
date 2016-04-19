@@ -2,7 +2,8 @@
     'use strict';
 
     angular.module('issueTrackingSystem.users.usersService', [])
-        .factory('usersService', ['$q',
+        .factory('usersService', [
+            '$q',
             '$http',
             'BASE_URL',
             function ($q, $http, BASE_URL) {

@@ -1,0 +1,46 @@
+<div>
+    <div class="user-dashboard">
+        <h3>Issue page</h3>
+        <br />
+        <div class="row">
+            <div class="col-sm-6 col-md-6 col-lg-6 col-md-offset-1">
+                <h2>
+                    {{issue.IssueKey}}
+                    <a ng-if="isAdmin || isLead" class="btn btn-md btn-success" href="#/issues/{{issue.Id}}/edit">Edit</a>
+                </h2>
+                <p><b>Title </b> {{issue.Title}}</p>
+                <p><b>Description </b> {{issue.Description}}</p>
+                <p><b>Assignee Id </b> (current id: {{issue.Assignee.Id}}) {{issue.Assignee.Username}}</p>
+                <p><b>Priority Id </b> (current id: {{issue.Priority.Id}}) {{issue.Priority.Name}}</p>
+                <p><b>Due Date</b> {{issue.DueDate}}</p>
+                <p>Author: {{issue.Author.Username}}</p>
+                <p>Project: {{issue.Project.Name}}</p>
+                <p>Status: {{issue.Status.Name}}</p>
+                <p>Labels: {{issue.Labels}}</p>
+            </div>
+            <div class="col-sm-4 col-sm-offset-1 col-md-3 col-md-offset-1 col-lg-3 col-lg-offset-1" ng-if="isAdmin || isLead || isAssignee">
+                <h3>Available statuses:</h3>
+                <div ng-repeat="status in issue.AvailableStatuses">
+                    <span class="col-md-4">-----{{status.Name}}</span>
+                    <button ng-click="changeIssueStatus(issue.Id, status.Id)" class="btn btn-md btn-primary">Change</button>
+                </div>
+            </div>
+        </div>
+        <div class="comments-box">
+            <div>
+                <div ng-if="issue.Comments" ng-repeat="comment in issue.Comments">
+                    <h4>{{comment.Author.Username}} - {{comment.CreatedOn}}</h4>
+                    <p>{{comment.Text}}</p>
+                    <br />
+                </div>
+            </div>
+            <div ng-if="isAssignee || isLead">
+                <div class="form-group">
+                    <label for="issueCommentInput"><b>Text: </b></label>
+                    <textarea id="issueCommentInput" class="form-control" placeholder="Leave your comment here..." ng-model="comment.Text"></textarea>
+                </div>
+                <button type="submit" class="btn btn-success" ng-click="addComment(comment)">Add Comment</button>
+            </div>
+        </div>
+    </div>
+</div>
