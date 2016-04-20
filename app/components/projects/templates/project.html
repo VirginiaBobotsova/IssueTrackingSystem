@@ -7,7 +7,7 @@
                 <h2 >
                     {{project.ProjectKey}}
                     <a ng-if="isAdmin || isLead" class="btn btn-md btn-success" href="#/projects/{{project.Id}}/edit">Edit</a>
-                    <a ng-if="isAdmin || isLead" class="btn btn-md btn-success" href="#/issues/add">Add Issue</a>
+                    <a ng-if="isAdmin || isLead" class="btn btn-md btn-success" href="#/projects/{{project.Id}}/add-issue">Add Issue</a>
                 </h2>
                 <p>Project key: {{project.ProjectKey}}</p>
                 <p><b>Name</b> {{project.Name}}</p>
@@ -28,13 +28,13 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr style="border-top: solid 1px grey" ng-repeat="issue in project.issues">
+                    <tr ng-repeat="issue in projectIssues">
                         <td>
-                            <a style="text-decoration:none" href="#/issues/{{issue.Id}}">{{issue.Title}} </a>
+                            <a href="#/issues/{{issue.Id}}">{{issue.Title}}</a>
                         </td>
-                        <td>{{issue.Description}} </td>
-                        <td>{{issue.DueDate}} </td>
-                        <td>{{issue.Assignee.Username}} </td>
+                        <td>{{issue.Description}}</td>
+                        <td>{{issue.DueDate}}</td>
+                        <td>{{issue.Assignee.Username}}</td>
                     </tr>
                     </tbody>
                 </table>

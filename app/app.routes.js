@@ -44,7 +44,7 @@
                 controller: 'projectsController'
             })
             .when('/projects/:id/add-issue', {
-                templateUrl: 'app/components/projects/templates/addIssue.html',
+                templateUrl: 'app/components/issues/templates/addIssue.html',
                 controller: 'projectsController'
             })
             .when('/issues/:id', {

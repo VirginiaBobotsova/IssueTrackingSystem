@@ -20,6 +20,8 @@
                 var defaultNotificationTimeout = 2000,
                     defaultReloadTimeout = 1000;
 
+                $scope.isAdmin = authenticationService.isAdministrator();
+
                 if($location.path().match('\/(?!index\.html)(projects\/[0-9]+)')){
                     getProject();
                 }
@@ -42,20 +44,18 @@
                             authenticationService.getCurrentUserId()
                                 .then(function (id) {
                                     $scope.isLead = (project.data.Lead.Id === id);
-
                                     $scope.project = projectsService.transformPrioritiesAndLabels(project.data);
-                                    projectsService.getProjectIssues($routeParams.id)
-                                        .then(function (projectIssues) {
-                                            $scope.project.issues = projectIssues.filter(function (issue) {
-                                                return issue.Assignee.Id === id;
-                                            });
-                                            if($scope.isLead || $scope.isAdmin){
-                                                $scope.project.issues = projectIssues;
-                                            }
+                                    issuesService.getCurrentUserIssues(999, 1)
+                                        .then(function (data) {
+                                            var projectIssues = [];
+                                           data.Issues.filter(function(issie) {
+                                               return issie.Project.Id === $routeParams.id
+                                           });
+                                            //if($scope.isLead || $scope.isAdmin){
+                                                $scope.projectIssues = data.Issues
+                                            //}
                                         });
-
                                 });
-
                         });
                 }
 
@@ -63,6 +63,7 @@
                     projectsService.getAllProjects()
                         .then(function (projects) {
                             $scope.projects = projects.data;
+                            //$scope.isAdmin = authenticationService.isAdministrator();
                         });
                 }
 
@@ -85,34 +86,36 @@
                 function editProject() {
                     projectsService.getProjectById($routeParams.id)
                         .then(function (project) {
-                            if(!$scope.isAdministrator){
+                            if(!$scope.isAdmin){
                                 authenticationService.getCurrentUserId()
                                     .then(function (id) {
                                         $scope.isLead = (project.data.Lead.Id === id);
-
                                         if(!$scope.isLead){
                                             redirectToHome(defaultReloadTimeout);
-                                            toaster.pop('error', 'Unauthorized');
+                                            toaster.pop('error', 'Unauthorized', defaultNotificationTimeout);
                                             return;
                                         }
                                     });
                             }
                             $scope.project = projectsService.transformPrioritiesAndLabels(project.data);
                             usersService.getUsers()
-                                .then(function (users) {
-                                    $scope.users=users;
+                                .then(function (data) {
+                                    console.log(data)
+                                    $scope.users = data.users;
                                 });
                         });
                     $scope.editProject = function (project) {
-                        project.LeadId = project.Lead.Id;
-                        delete project.Lead;
+                        $scope.project.Lead = {
+                            Id : project.Lead.Id,
+                            availableOptions : $scope.users};
+                        //delete project.Lead;
+
                         projectsService.editProject(project)
                             .then(function (response) {
                                 $location.path('#/projects/' + project.Id);
-                                toaster.pop('success', 'Project edited successfully');
+                                toaster.pop('success', 'Project edited successfully', defaultNotificationTimeout);
                             }, function (error) {
-
-                                toaster.pop('error', 'Error');
+                                toaster.pop('error', 'Error', defaultNotificationTimeout);
                             });
                     };
                 }
