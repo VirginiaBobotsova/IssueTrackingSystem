@@ -1,6 +1,8 @@
 (function () {
 	'use strict';
-    angular.module('issueTrackingSystem.issues', [])
+
+    angular
+        .module('issueTrackingSystem.issues', [])
         .controller('issuesController', [
             '$scope',
             '$location',
@@ -9,7 +11,7 @@
             'usersService',
             'projectsService',
             'issuesService',
-            'authenticationService',
+            'identificationService',
             'toaster',
             function (
                 $scope,
@@ -19,7 +21,7 @@
                 usersService,
                 projectsService,
                 issuesService,
-                authenticationService,
+                identificationService,
                 toaster) {
                 var defaultNotificationTimeout = 2000,
                     defaultReloadTimeout = 1000;

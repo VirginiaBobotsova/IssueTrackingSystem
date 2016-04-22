@@ -4,7 +4,7 @@
             'issueTrackingSystem.users.usersService',
             'issueTrackingSystem.projects.projectsService',
             'issueTrackingSystem.issues.issuesService',
-            'issueTrackingSystem.users.authentication',
+            'issueTrackingSystem.users.identity',
             'issueTrackingSystem.common.directives',
             'toaster'])
         .controller('homeController', [
@@ -14,7 +14,7 @@
             '$timeout',
             '$location',
             'usersService',
-            'authenticationService',
+            'identificationService',
             'issuesService',
             'projectsService',
             'toaster',
@@ -25,7 +25,7 @@
                 $timeout,
                 $location,
                 usersService,
-                authenticationService,
+                identificationService,
                 issuesService,
                 projectsService,
                 toaster) {

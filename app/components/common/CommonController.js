@@ -20,8 +20,8 @@
         }])
         .controller('modalController', ['$scope', '$modal', function($scope, $modal) {
             $modal.open({
-                templateUrl : 'app/components/projects/templates/addProject.html',
-                windowTemplateUrl: 'app/components/projects/templates/allProjects.html'})
+                templateUrl : 'app/components/projects/user-project-issue-templates/add-project.html',
+                windowTemplateUrl: 'app/components/projects/user-project-issue-templates/all-projects.html'})
         }])
 
 }());
