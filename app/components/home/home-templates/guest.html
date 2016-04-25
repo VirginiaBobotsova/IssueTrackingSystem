@@ -1,0 +1,72 @@
+<div id="jumbotron" class="row">
+    <div class="jumbotron col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1">
+        <h1>Issue Tracking System</h1>
+        <p>Please register/login to use our services.</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-5 col-md-offset-1" ng-controller="HomeController">
+        <toaster-container toaster-options="{'animation-class': 'toast-center'}"></toaster-container>
+        <form name="loginForm" class="form-horizontal" autocomplete="off">
+            <fieldset>
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-3">
+                        <legend>Login</legend>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="loginUsername" class="col-md-3 control-label">Email</label>
+                    <div class="col-md-9">
+                        <input type="text" required="required" class="form-control" id="loginUsername" ng-model="loginUser.username" placeholder="Email">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword" class="col-md-3 control-label">Password</label>
+                    <div class="col-md-9">
+                        <input type="password" required="required" class="form-control" id="loginPassword" ng-model="loginUser.password" placeholder="Password">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-9 col-md-offset-3">
+                        <button type="submit" class="btn btn-primary" ng-disabled="loginForm.$invalid" ng-click="login(loginUser)">Login</button>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    <div class="col-md-5" ng-controller="HomeController">
+        <form name="registerForm" class="form-horizontal" autocomplete="off">
+            <fieldset>
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-3">
+                        <legend>Register</legend>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail" class="col-md-3 control-label">Email</label>
+                    <div class="col-md-9">
+                        <input type="email" class="form-control" ng-model="user.email" id="registerEmail" required="required" placeholder="Email">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword" class="col-md-3 control-label">Password</label>
+                    <div class="col-md-9">
+                        <input type="password" minlength="3" maxlength="100" class="form-control" ng-model="user.password" id="registerPassword" required="required" placeholder="Password">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="registerConfirmPassword" class="col-md-3 control-label">Confirm password</label>
+                    <div class="col-md-9">
+                        <input type="password" minlength="3" maxlength="100" class="form-control" ng-model="user.confirmPassword" id="registerConfirmPassword" required="required" placeholder="Confirm password">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-9 col-lg-offset-3">
+                        <button type="reset" class="btn btn-default">Cancel</button>
+                        <button type="submit" class="btn btn-primary" ng-disabled="registerForm.$invalid || user.password != user.confirmPassword" ng-click="register(user)">Register</button>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>

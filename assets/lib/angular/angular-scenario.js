@@ -14933,7 +14933,7 @@ function $CacheFactoryProvider() {
  */
 function $TemplateCacheProvider() {
   this.$get = ['$cacheFactory', function($cacheFactory) {
-    return $cacheFactory('user-project-issue-templates');
+    return $cacheFactory('user-project-issues-templates');
   }];
 }
 
@@ -16486,7 +16486,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
 
     /**
      * Once the directives have been collected, their compile functions are executed. This method
-     * is responsible for inlining directive user-project-issue-templates as well as terminating the application
+     * is responsible for inlining directive user-project-issues-templates as well as terminating the application
      * of the directives if the terminal directive has been reached.
      *
      * @param {Array} directives Array of collected directives to execute their compile function.
@@ -16549,7 +16549,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
 
         if (directiveValue = directive.scope) {
 
-          // skip the check for directives with async user-project-issue-templates, we'll check the derived sync
+          // skip the check for directives with async user-project-issues-templates, we'll check the derived sync
           // directive when the template arrives
           if (!directive.templateUrl) {
             if (isObject(directiveValue)) {
@@ -16604,7 +16604,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
                                         replaceDirective && replaceDirective.name, {
                                           // Don't pass in:
                                           // - controllerDirectives - otherwise we'll create duplicates controllers
-                                          // - newIsolateScopeDirective or templateDirective - combining user-project-issue-templates with
+                                          // - newIsolateScopeDirective or templateDirective - combining user-project-issues-templates with
                                           //   element transclusion doesn't make sense.
                                           //
                                           // We need only nonTlbTranscludeDirective so that we prevent putting transclusion
