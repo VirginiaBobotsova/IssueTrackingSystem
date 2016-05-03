@@ -12,6 +12,15 @@
         .config(config);
 
     function config($routeProvider) {
+        var routeChecks = {
+            authenticated: ['$q', 'authenticationService', function($q, authenticationService) {
+                if (authenticationService.isAuthenticated()) {
+                    return $q.when(true);
+                }
+
+                return $q.reject('Unauthorized Access');
+            }]
+        };
         $routeProvider
             .when('/projects', {
                 templateUrl: 'app/components/projects/projects-templates/all-projects.html',

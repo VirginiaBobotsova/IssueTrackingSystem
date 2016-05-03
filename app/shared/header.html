@@ -1,10 +1,10 @@
-<nav class="navbar navbar-default navbar-static-top" ng-controller="HomeController">
-    <div class="container-fluid" ng-if="!userLogged">
+<nav class="navbar navbar-default navbar-static-top">
+    <div class="container-fluid" ng-if="!isAuthenticated">
         <div class="navbar-header">
             <a class="navbar-brand" href="#/">Issue Tracking System</a>
         </div>
     </div>
-    <div class="container-fluid" ng-if="userLogged">
+    <div class="container-fluid" ng-if="isAuthenticated">
         <div class="navbar-header">
             <a class="navbar-brand" href="#/">Issue Tracking System</a>
         </div>
@@ -16,11 +16,10 @@
                         <!-- Simple dropdown -->
                         <span uib-dropdown on-toggle="toggled(open)">
                           <a href id="simple-dropdown" uib-dropdown-toggle>
-                              Profile
+                              {{currentUser.Email}}
                           </a>
                           <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="simple-dropdown">
-                              <li><a href="#/profile">Edit profile</a></li>
-                              <li><a href="/profile/password">Change password</a></li>
+                              <li><a href="#/profile/password">Change password</a></li>
                           </ul>
                         </span>
                     </div>

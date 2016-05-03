@@ -10,29 +10,28 @@
         '$routeParams',
         'projectsService',
         'issuesService',
-        'authenticationService'];
+        'usersService'];
 
     function getProject(
         $scope,
         $routeParams,
         projectsService,
         issuesService,
-        authenticationService) {
+        usersService) {
         projectsService.getProjectById($routeParams.id)
             .then(function (project) {
-                authenticationService.getCurrentUserId()
-                    .then(function (id) {
-                        $scope.isLead = (project.data.Lead.Id === id);
+                usersService.getCurrentUserInfo()
+                    .then(function (user) {
+                        $scope.isLead = (project.data.Lead.Id === user.Id);
                         $scope.project = projectsService.transformPrioritiesAndLabels(project.data);
                         issuesService.getCurrentUserIssues(999, 1)
                             .then(function (data) {
-                                var projectIssues = [];
                                 data.Issues.filter(function (issie) {
                                     return issie.Project.Id === $routeParams.id
                                 });
-                                //if($scope.isLead || $scope.isAdmin){
+                                if($scope.isLead || $scope.isAdmin){
                                 $scope.projectIssues = data.Issues;
-                                //}
+                                }
                             });
                     });
             })

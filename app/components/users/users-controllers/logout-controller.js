@@ -6,18 +6,26 @@
         .controller('LogoutController', logoutUser);
 
     logoutUser.$inject = [
-            '$window',
-            '$location',
-            'toaster'];
+        '$scope',
+        '$location',
+        'authenticationService',
+        'toaster'];
 
     function logoutUser(
-        $window,
+        $scope,
         $location,
+        authenticationService,
         toaster) {
         var defaultNotificationTimeout = 2000;
-        $window.sessionStorage.removeItem('access_token');
-        $window.sessionStorage.removeItem('user');
-            toaster.pop('success', 'Logout successful!', defaultNotificationTimeout);
-            $location.path('/');
+
+        $scope.logout = logout;
+
+        function logout() {
+        authenticationService.logout()
+            .then(function(success) {
+                $location.path('/');
+                toaster.pop('success', 'Logout successful!', defaultNotificationTimeout);
+            });
+        }
     }
 }());

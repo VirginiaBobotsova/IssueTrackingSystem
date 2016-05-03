@@ -2,44 +2,35 @@
     'use strict';
 
     angular
-        .module('issueTrackingSystem.users.authentication', [])
+        .module('issueTrackingSystem.users.authentication', ['ngCookies'])
         .factory('authenticationService', authenticationService);
 
     authenticationService.$inject = [
-            '$http',
-            '$q',
-            'BASE_URL'];
+        '$window',
+        '$http',
+        '$cookieStore',
+        '$q',
+        '$location',
+        'identificationService',
+        'BASE_URL'];
 
-    function authenticationService($http, $q, BASE_URL) {
+    function authenticationService($window, $http, $cookieStore, $q, $location, identificationService, BASE_URL) {
+        var AUTHENTICATION_COOKIE_KEY = '!__Authentication_Cookie_Key__!';
+
         return {
-            login: login,
             register: register,
-            getUserInfo: getUserInfo,
+            login: login,
+            logout: logout,
             isAuthenticated: isAuthenticated,
             isAdministrator: isAdministrator,
-            getAllUsers: getAllUsers,
-            getCurrentUserId: getCurrentUserId,
-            logout : logout
+            refreshCookie: refreshCookie
         };
 
-        function authHeader() {
-            return {Authorization: sessionStorage['access_token']};
-        }
-
-        function login(loginData) {
-            var deferred = $q.defer();
-
-            $http.post(BASE_URL + 'api/token',
-                'grant_type=password&username=' + loginData.username + '&password=' + loginData.password,
-                {headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-            }).then(function (response) {
-                sessionStorage['access_token'] = 'Bearer ' + response.data.access_token;
-                deferred.resolve(response);
-            }, function (error) {
-                deferred.reject(error)
-            });
-
-            return deferred.promise;
+        function preserveUserData(data) {
+            var accessToken = data.access_token;
+            $http.defaults.headers.common.Authorization = 'Bearer ' + accessToken;
+            //$cookies.put('AUTHENTICATION_COOKIE_KEY', 'accessToken');
+            $cookieStore.put(AUTHENTICATION_COOKIE_KEY, accessToken)
         }
 
         function register(registerData) {
@@ -47,26 +38,48 @@
 
             $http.post(BASE_URL + 'api/account/register', registerData)
                 .then(function (response) {
-                    deferred.resolve(response);
-                }, function (error) {
-                    deferred.reject(error);
+                    preserveUserData(response.data);
+
+                    identificationService.requestUserProfile()
+                        .then(function () {
+                            deferred.resolve(response.data);
+                        });
                 });
 
             return deferred.promise;
         }
 
-        function isAuthenticated() {
-            return sessionStorage['access_token'];
+        function login(loginData) {
+            var deferred = $q.defer();
+
+            $http.post(BASE_URL + 'api/token',
+                    'grant_type=password&username=' + loginData.username + '&password=' + loginData.password)
+                //{headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                .then(function (response) {
+                    preserveUserData(response.data);
+
+                    identificationService.requestUserProfile()
+                        .then(function () {
+                            deferred.resolve(response.data);
+                        });
+                });
+
+            return deferred.promise;
         }
 
-        function getUserInfo() {
-            $http.get(BASE_URL + 'users/me', {
-                headers: authHeader()
-            }).then(function (response) {
-                sessionStorage['userInfo'] = JSON.stringify(response.data);
-            }, function (error) {
-                console.log(error);
-            });
+        function logout() {
+            //$cookieStore.remove(AUTHENTICATION_COOKIE_KEY);
+            delete $cookieStore[AUTHENTICATION_COOKIE_KEY];
+            //$window.sessionStorage.removeItem('access_token');
+            //$window.sessionStorage.removeItem('user');
+            delete $http.defaults.headers.common.Authorization;
+            identificationService.removeUserProfile();
+            console.log(AUTHENTICATION_COOKIE_KEY)
+            $location.path('/');
+        }
+
+        function isAuthenticated() {
+            return !!$cookieStore.get(AUTHENTICATION_COOKIE_KEY);
         }
 
         function isAdministrator() {
@@ -77,42 +90,11 @@
             }
         }
 
-        function getAllUsers() {
-            var deferred = $q.defer();
-
-            $http.get(BASE_URL + 'users',
-                {headers: authHeader()})
-                .then(function (users) {
-                deferred.resolve(users.data);
-            }, function (error) {
-                deferred.reject(error);
-            });
-
-            return deferred.promise;
-        }
-
-        function getCurrentUserId() {
-            var deferred = $q.defer();
-            var userInfo = sessionStorage['userInfo'];
-            if (userInfo) {
-                var id = JSON.parse(userInfo).Id;
-                deferred.resolve(id);
-            }else{
-                deferred.reject();
+        function refreshCookie() {
+            if (isAuthenticated()) {
+                $http.defaults.headers.common.Authorization = 'Bearer ' + $cookieStore.get(AUTHENTICATION_COOKIE_KEY);
+                identificationService.requestUserProfile();
             }
-            return deferred.promise;
-        }
-
-        function logout(){
-            var deferred = $q.defer();
-            $http.post(BASE_URL + 'api/account/logout',
-                {headers: authHeader()})
-                .then(function (response) {
-                    deferred.resolve(response.data);
-                }, function (error) {
-                    deferred.reject(error);
-                });
-            return deferred.promise;
         }
     }
-})();
+}());

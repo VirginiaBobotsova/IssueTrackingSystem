@@ -8,8 +8,10 @@
     <link rel="stylesheet" href="assets/css/toaster.css">
     <link rel="stylesheet" href="assets/css/app.css">
     <title>Issue Tracking System</title>
+
+    <base href="#/" />
 </head>
-<body>
+<body ng-controller="MainController">
 <header ng-include="'app/shared/header.html'"></header>
 <div ng-view></div>
 <footer ng-include="'app/shared/footer.html'"></footer>
@@ -25,6 +27,7 @@
 <script type="text/javascript" src="assets/lib/toaster.js"></script>
 <script type="text/javascript" src="assets/lib/angular-base64-upload.js"></script>
 <script type="text/javascript" src="assets/lib/ui-bootstrap.js"></script>
+<script type="text/javascript" src="assets/lib/ui-bootstrap-tpls.js"></script>
 <script type="text/javascript" src="assets/lib/angular-touch.js"></script>
 <script type="text/javascript" src="assets/lib/ui-grid.js"></script>
 <script type="text/javascript" src="assets/lib/angular-modal-service.js"></script>
@@ -35,6 +38,7 @@
 <script type="text/javascript" src="app/components/home/home-controller.js"></script>
 
 <script type="text/javascript" src="app/components/users/users-module.js"></script>
+<script type="text/javascript" src="app/components/users/users-services/identity.js"></script>
 <script type="text/javascript" src="app/components/users/users-services/authentication.js"></script>
 <script type="text/javascript" src="app/components/users/users-services/users-service.js"></script>
 <script type="text/javascript" src="app/components/users/users-controllers/all-users-controller.js"></script>
@@ -44,7 +48,7 @@
 
 <script type="text/javascript" src="app/components/projects/projects-module.js"></script>
 <script type="text/javascript" src="app/components/projects/projects-services/projects-service.js"></script>
-<script type="text/javascript" src="app/components/projects/projects-controllers/add-issue-to-project.js"></script>
+<script type="text/javascript" src="app/components/projects/projects-controllers/add-issue-to-project-controller.js"></script>
 <script type="text/javascript" src="app/components/projects/projects-controllers/add-project-controller.js"></script>
 <script type="text/javascript" src="app/components/projects/projects-controllers/all-projects-controller.js"></script>
 <script type="text/javascript" src="app/components/projects/projects-controllers/edit-project-controller.js"></script>
@@ -56,6 +60,7 @@
 <script type="text/javascript" src="app/components/issues/issues-controllers/edit-issue-controller.js"></script>
 
 <script type="text/javascript" src="app/components/common/common-module.js"></script>
+<script type="text/javascript" src="app/components/common/common-controllers/main-controller.js"></script>
 <script type="text/javascript" src="app/components/common/common-controllers/dropdown-controller.js"></script>
 <script type="text/javascript" src="app/components/common/common-controllers/modal-controller.js"></script>
 <script type="text/javascript" src="app/components/common/common-directives/redirect-directive.js"></script>

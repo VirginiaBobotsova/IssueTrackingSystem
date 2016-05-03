@@ -1,4 +1,4 @@
 <div>
-    <div ng-include="'app/components/home/home-templates/guest.html'" ng-if="!userLogged"></div>
-    <div ng-include="'app/components/home/home-templates/user-dashboard.html'" ng-if="userLogged"></div>
+    <div ng-include="'app/components/home/home-templates/guest.html'" ng-if="!isAuthenticated"></div>
+    <div ng-include="'app/components/home/home-templates/user-dashboard.html'" ng-if="isAuthenticated"></div>
 </div>

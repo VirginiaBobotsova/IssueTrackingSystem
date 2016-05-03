@@ -5,9 +5,9 @@
         .module('issueTrackingSystem.common.dropDown', ['ui.bootstrap', 'issueTrackingSystem.common.redirect'])
         .controller('DropDownController', dropDown);
 
-    dropDown.$inject = ['$scope', '$log'];
+    dropDown.$inject = ['$scope', '$log', 'identificationService'];
 
-     function dropDown($scope, $log) {
+     function dropDown($scope, $log, identificationService) {
         $scope.status = {
             isopen: false
         };

@@ -4,6 +4,7 @@
     angular
         .module('issueTrackingSystem.home', [
             'ngRoute',
+            'issueTrackingSystem.common.mainController',
             'issueTrackingSystem.home.homeController'])
         .config(config);
 
@@ -12,9 +13,6 @@
             .when('/', {
                 templateUrl: 'app/components/home/home-templates/home.html',
                 controller: 'HomeController'
-            })
-            .otherwise({
-                redirectTo: '/'
             })
     }
 }());
