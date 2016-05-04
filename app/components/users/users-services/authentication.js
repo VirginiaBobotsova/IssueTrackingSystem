@@ -33,27 +33,29 @@
             $cookieStore.put(AUTHENTICATION_COOKIE_KEY, accessToken)
         }
 
-        function register(registerData) {
+        function register(user) {
             var deferred = $q.defer();
 
-            $http.post(BASE_URL + 'api/account/register', registerData)
+            $http.post(BASE_URL + 'api/account/register', user)
                 .then(function (response) {
-                    preserveUserData(response.data);
 
-                    identificationService.requestUserProfile()
-                        .then(function () {
-                            deferred.resolve(response.data);
-                        });
+                    //preserveUserData(response.data);
+
+                    //identificationService.requestUserProfile()
+                       //.then(function () {
+                           deferred.resolve(response.data);
+                       //});
                 });
 
             return deferred.promise;
         }
 
-        function login(loginData) {
+        function login(user) {
             var deferred = $q.defer();
 
+            //loginData['grant_type']='password';
             $http.post(BASE_URL + 'api/token',
-                    'grant_type=password&username=' + loginData.username + '&password=' + loginData.password)
+                    'grant_type=password&username=' + user.email + '&password=' + user.password)
                 //{headers: {'Content-Type': 'application/x-www-form-urlencoded'}
                 .then(function (response) {
                     preserveUserData(response.data);
@@ -61,6 +63,7 @@
                     identificationService.requestUserProfile()
                         .then(function () {
                             deferred.resolve(response.data);
+
                         });
                 });
 
@@ -68,14 +71,17 @@
         }
 
         function logout() {
+            $cookieStore.remove(AUTHENTICATION_COOKIE_KEY);
+            //$cookieStore.userInfo = undefined;
+            //$cookieStore.remove('userInfo')
             //$cookieStore.remove(AUTHENTICATION_COOKIE_KEY);
-            delete $cookieStore[AUTHENTICATION_COOKIE_KEY];
+            //delete $cookieStore[AUTHENTICATION_COOKIE_KEY];
             //$window.sessionStorage.removeItem('access_token');
             //$window.sessionStorage.removeItem('user');
             delete $http.defaults.headers.common.Authorization;
             identificationService.removeUserProfile();
-            console.log(AUTHENTICATION_COOKIE_KEY)
-            $location.path('/');
+
+            //$location.path('/');
         }
 
         function isAuthenticated() {

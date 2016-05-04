@@ -67,10 +67,10 @@
             return deferred.promise;
         }
 
-        function editProject(id, data) {
-            data = managePrioritiesAndLabels(data);
+        function editProject(project) {
+            project = managePrioritiesAndLabels(project);
             var deferred = $q.defer();
-            $http.put(BASE_URL + 'projects/' + id, data)
+            $http.put(BASE_URL + 'projects/' + project.Id, project)
                 //{headers: authHeader()})
                 .then(function (response) {
                     deferred.resolve(response)

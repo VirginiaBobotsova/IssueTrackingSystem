@@ -24,14 +24,16 @@
         toaster) {
         var defaultNotificationTimeout = 2000;
 
-        $scope.isAdmin = authenticationService.isAdministrator();
+        $scope.isAdmin = usersService.isAdministrator();
 
         projectsService.getProjectById($routeParams.id)
             .then(function (project) {
                 if(!$scope.isAdmin){
-                    authenticationService.getCurrentUserId()
-                        .then(function (id) {
-                            $scope.isLead = (project.data.Lead.Id === id);
+                    usersService.getCurrentUserInfo()
+                        .then(function (data) {
+                            console.log(data)
+                            console.log(project.data)
+                            $scope.isLead = (project.data.Lead.Id === data.Id);
                             if(!$scope.isLead){
                                 $location.path('/');
                                 toaster.pop('error', 'Unauthorized', defaultNotificationTimeout);
@@ -42,7 +44,8 @@
                 $scope.project = projectsService.transformPrioritiesAndLabels(project.data);
                 usersService.getUsers()
                     .then(function (data) {
-                        $scope.users = data.users;
+                        console.log(data)
+                        $scope.users = data;
                     });
             });
         $scope.editProject = function (project) {
@@ -53,10 +56,11 @@
 
             projectsService.editProject(project)
                 .then(function (response) {
+                    console.log(response)
                     $location.path('#/projects/' + project.Id);
-                    toaster.pop('success', 'Project edited successfully', defaultNotificationTimeout);
+                    toaster.pop('success', 'Project edited successfully', null, defaultNotificationTimeout);
                 }, function (error) {
-                    toaster.pop('error', 'Error', defaultNotificationTimeout);
+                    toaster.pop('error', 'Error', null, defaultNotificationTimeout);
                 });
         };
     }

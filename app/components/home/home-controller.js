@@ -46,6 +46,8 @@
 
             $scope.attachUserAssignedIssues = attachUserAssignedIssues();
 
+            $scope.isAdmin = usersService.isAdministrator();
+
            // $scope.addProjectRedirect = function () {
              //   $location.path('projects/add');
             //};
@@ -60,8 +62,10 @@
         function register(user, registerForm) {
             authenticationService.register(user)
                 .then(function (responce) {
-                    $location.path('/');
-                    $scope.registerForm.$setPristine();
+                    toaster.pop('success', 'Register successful!', null, defaultNotificationTimeout);
+                    login(user);
+
+                    //$scope.registerForm.$setPristine();
                    // var loginData = {
                      //   Username: responce.config.data.Email,
                        // Password: responce.config.data.Password
@@ -69,11 +73,11 @@
                    // authenticationService.login(loginData)
                      //   .then(function() {
                             //$route.reload();
-                            toaster.pop('success', 'Register successful!', null, defaultNotificationTimeout);
-                        });
-               // } //function (error) {
-                   // toaster.pop('error', 'Registration error!', error.data, defaultNotificationTimeout);
-              //  })
+
+                    },
+               function (error) {
+                   toaster.pop('error', 'Registration error!', error.data, defaultNotificationTimeout);
+              });
         }
 
         function login(user) {
@@ -82,7 +86,7 @@
                     //identificationService.requestUserProfile();
                     $route.reload();
                     toaster.pop('success', 'Login successful!', null, defaultNotificationTimeout);
-                    $scope.loginForm.$setPristine();
+                    //$scope.loginForm.$setPristine();
                 }, function (error) {
                     toaster.pop('error', 'Login error!', null, defaultNotificationTimeout);
                 });

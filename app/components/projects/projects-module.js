@@ -19,31 +19,41 @@
                 }
 
                 return $q.reject('Unauthorized Access');
+            }],
+            authorized : ['$q', 'usersService', function($q, usersService) {
+                if (usersService.isAdministrator()) {
+                    return $q.when(true);
+                }
+
+                return $q.reject('Unauthorized Access');
             }]
         };
+
         $routeProvider
             .when('/projects', {
                 templateUrl: 'app/components/projects/projects-templates/all-projects.html',
-                controller: 'AllProjectsController'
+                controller: 'AllProjectsController',
+                resolve : routeChecks.authorized
             })
             .when('/projects/add', {
                 templateUrl: 'app/components/projects/projects-templates/add-project.html',
-                controller: 'AddProjectController'
+                controller: 'AddProjectController',
+                resolve : routeChecks.authorized
             })
             .when('/projects/:id', {
                 templateUrl: 'app/components/projects/projects-templates/project.html',
-                controller: 'ProjectController'
+                controller: 'ProjectController',
+                resolve : routeChecks.authenticated
             })
             .when('/projects/:id/edit', {
                 templateUrl: 'app/components/projects/projects-templates/edit-project.html',
-                controller: 'EditProjectController'
+                controller: 'EditProjectController',
+                resolve : routeChecks.authenticated
             })
             .when('/projects/:id/add-issue', {
                 templateUrl: 'app/components/projects/projects-templates/add-issue-to-project.html',
-                controller: 'AddIssueToProjectController'
-            })
-            .otherwise({
-                redirectTo: '/'
+                controller: 'AddIssueToProjectController',
+                resolve : routeChecks.authenticated
             })
     }
 }());

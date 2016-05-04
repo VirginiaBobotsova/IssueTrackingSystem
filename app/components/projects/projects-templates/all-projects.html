@@ -1,5 +1,8 @@
 <div>
     <div class="user-dashboard">
+        <a class="btn btn-md btn-success" href="#/">Dashboard</a>
+        <a class="btn btn-md btn-success" href="#/projects">Projects</a>
+        <br>
         <h1>Projects</h1>
         <br />
             <div class="item panel" ng-repeat="project in projects">
@@ -8,7 +11,7 @@
                     <a class="btn btn-sm btn-success" href="#/projects/{{project.Id}}">view</a>
                 </p>
             </div>
-        <a class="btn btn-md btn-success" href="#/projects/add" ng-if="isAdmin">Add Project</a>
+        <a class="btn btn-md btn-success" href="#/projects/add">Add New Project</a>
     </div>
 </div>
 

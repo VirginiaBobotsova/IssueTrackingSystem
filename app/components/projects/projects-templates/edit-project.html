@@ -1,21 +1,22 @@
-<div>
 <div class="user-dashboard">
     <h3> Edit Project</h3>
     <div>
-        <form name="edit-project-form" class="add-form">
+        <form name="edit-project-form" class="edit-form">
+            <h2>{{project.Name}}</h2>
             <div class="form-group">
                 <label for="projectName">Name</label>
-                <input type="text" ng-model="project.Name" class="form-control" id="projectName" placeholder="Project Name" value="SIT">
+                <input type="text" ng-model="project.Name" class="form-control" id="projectName" placeholder="Project Name" value="">
             </div>
             <div class="form-group">
                 <label for="projectLeader">Leader</label>
-                <select ng-model="project.Lead.Id" ng-disabled="!isAdmin" id="projectLeader" class="form-control">
-                    <option ng-repeat="option in data.availableOptions" value="{{option.id}}">{{option.name}}</option>
+                <select ng-model="project.Lead.Id"  id="projectLeader" class="form-control"
+                ng-options="user as user.Username for user in users track by user.Id">
+
                 </select>
             </div>
             <div class="form-group">
                 <label for="projectKey">Project Key</label>
-                <input id="projectKey" ng-model="project.ProjectKey" type="text" class="form-control" id="projectKey" placeholder="Project Key" ng-disabled="true" value="">
+                <input id="projectKey" ng-model="project.ProjectKey" type="text" class="form-control" placeholder="Project Key" ng-disabled="true" value="">
             </div>
             <div class="form-group">
                 <label for="projectPriorities">Priorities (comma separated)</label>
@@ -23,12 +24,12 @@
             </div>
             <div class="form-group">
                 <label for="projectLabels">Labels (comma separated)</label>
-                <input type="text" ng-model="project.Labels" class="form-control" id="projectLabels" placeholder="Labels" value="Softuni, software">
+                <input type="text" ng-model="project.Labels" class="form-control" id="projectLabels" placeholder="Labels" value="">
                 <br>
             </div>
             <div class="form-group">
                 <label for="projectDescription">Description</label>
-                <textarea id="projectDescription" ng-model="project.Description"class="form-control" placeholder="Description">Project for managing issues for specific projects with priorities, status transitions and labels</textarea>
+                <textarea id="projectDescription" ng-model="project.Description" class="form-control" placeholder="Description"></textarea>
             </div>
             <button type="submit" class="btn btn-success" ng-disabled="!project.Name
                     ||!project.Lead.Id
@@ -38,5 +39,4 @@
         </form>
     </div>
 </div>
-</div>
-</div>
+

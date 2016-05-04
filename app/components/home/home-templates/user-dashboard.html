@@ -1,6 +1,6 @@
 <div class="user-dashboard">
-    <a class="btn btn-md btn-success" href="#/">Dashboard</a>
-    <a class="btn btn-md btn-success" href="#/projects">Projects</a>
+    <a class="btn btn-md btn-success" href="#/" ng-if="isAdmin">Dashboard</a>
+    <a class="btn btn-md btn-success" href="#/projects" ng-if="isAdmin">Projects</a>
     <br>
     <h1>Dashboard</h1>
 

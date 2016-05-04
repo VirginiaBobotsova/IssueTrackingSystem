@@ -9,12 +9,12 @@
                     <a ng-if="isAdmin || isLead" class="btn btn-md btn-success" href="#/projects/{{project.Id}}/edit">Edit</a>
                     <a ng-if="isAdmin || isLead" class="btn btn-md btn-success" href="#/projects/{{project.Id}}/add-issue">Add Issue</a>
                 </h2>
-                <p>Project key: {{project.ProjectKey}}</p>
-                <p><b>Name</b> {{project.Name}}</p>
-                <p><b>Description</b> {{project.Description}}</p>
-                <p><b>LeadId</b> (current id: {{project.Lead.Id}}) {{project.Lead.Username}}</p>
-                <p>Labels: {{project.Labels}}</p>
-                <p>Priorities: {{project.Priorities}}</p>
+                <p><span class="item-atr">Project key </span>{{project.ProjectKey}}</p>
+                <p><span class="item-atr">Name </span>{{project.Name}}</p>
+                <p><span class="item-atr">Description </span>{{project.Description}}</p>
+                <p><span class="item-atr">LeadId </span>(current id: {{project.Lead.Id}}) {{project.Lead.Username}}</p>
+                <p><span class="item-atr">Labels </span>{{project.Labels}}</p>
+                <p><span class="item-atr">Priorities </span>{{project.Priorities}}</p>
             </div>
             <div class="col-sm-6 col-md-6 col-lg-6 col-md-offset-1">
 

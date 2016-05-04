@@ -8,16 +8,15 @@
     getAllProjects.$inject = [
         '$scope',
         'projectsService',
-        'authenticationService'];
+        'usersService'];
 
     function getAllProjects(
         $scope,
         projectsService,
-        authenticationService) {
+        usersService) {
         projectsService.getAllProjects()
             .then(function (projects) {
                 $scope.projects = projects.data;
-                $scope.isAdmin = authenticationService.isAdministrator();
             });
     }
 }());
