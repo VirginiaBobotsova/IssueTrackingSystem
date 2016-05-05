@@ -49,11 +49,6 @@
                     });
             });
         $scope.editProject = function (project) {
-            $scope.project.Lead = {
-                Id : project.Lead.Id,
-                availableOptions : $scope.users};
-            //delete project.Lead;
-
             projectsService.editProject(project)
                 .then(function (response) {
                     console.log(response)

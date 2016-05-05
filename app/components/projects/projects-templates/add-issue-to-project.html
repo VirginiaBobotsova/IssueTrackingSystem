@@ -1,5 +1,7 @@
-<div>
-    <div class="user-dashboard">
+ <div class="user-dashboard">
+     <a class="btn btn-md btn-success" href="#/projects/project.Id">Go Back To Project</a>
+     <a class="btn btn-md btn-success" href="#/">Dashboard</a>
+     <a class="btn btn-md btn-success" href="#/projects" ng-if="isAdmin">Projects</a>
         <h3>Add Issue</h3>
         <form name="add-issue-form" class="add-form">
             <div class="form-group">
@@ -8,20 +10,24 @@
             </div>
             <div class="form-group">
                 <label for="issueAssignee">Assignee</label>
-                <select id="issueAssignee" ng-model="issue.AssigneeId" class="form-control">
-                    <option ng-repeat="user in users" value="{{user.Id}}" >{{user.Username}}</option>
+                <select id="issueAssignee" ng-model="issue.AssigneeId" class="form-control"
+                        ng-options="user.Id as user.Username for user in users">
+                    <option value="">-- Select Assignee --</option>
                 </select>
             </div>
             <div class="form-group">
                 <label for="issueProject">Project</label>
-                <select id="issueProject" ng-change="attachProjectPriorities(issue.ProjectId)" ng-model="issue.ProjectId" class="form-control">
-                    <option ng-repeat="project in projects" value="{{project.Id}}" >{{project.Name}}</option>
+                <select id="issueProject" ng-change="attachProjectPriorities(selectedProjectId)" ng-model="selectedProjectId" class="form-control"
+                        ng-options="project.Id as project.Name for project in projects"
+                        ng-disabled="!isAdmin">
+                    <option value="">-- Select Project --</option>
                 </select>
             </div>
             <div class="form-group">
                 <label for="issuePriority">Priority</label>
-                <select ng-model="issue.PriorityId" id="issuePriority" class="form-control">
-                    <option ng-repeat="priority in issue.Priorities" value="{{priority.Id}}">{{priority.Name}}</option>
+                <select ng-model="issue.Priority.Id" id="issuePriority" class="form-control"
+                        ng-options="priority.Id as priority.Name for priority in issuePriorities">
+                    <option value="">-- Select Priority --</option>
                 </select>
             </div>
             <div class="form-group">
@@ -40,4 +46,3 @@
             <button type="submit" class="btn btn-success" ng-click="addIssue(issue)">Add Issue</button>
         </form>
     </div>
-</div>

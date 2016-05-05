@@ -9,6 +9,7 @@
             '$scope',
             '$route',
             '$routeParams',
+            'usersService',
             'projectsService',
             'issuesService',
             'authenticationService',
@@ -18,6 +19,7 @@
         $scope,
         $route,
         $routeParams,
+        usersService,
         projectsService,
         issuesService,
         authenticationService,
@@ -26,50 +28,52 @@
 
         getIssue();
 
-        function changeIssueStatus(issueId, statusId) {
-            issuesService.changeIssueStatus(issueId, statusId)
-                .then(function (response) {
-                    toaster.pop('success', 'Successfully applied issue status', defaultNotificationTimeout);
-                    $route.reload();
-                }, function (error) {
-                    toaster.pop('error', 'Error', defaultNotificationTimeout);
-                })
-        }
+        $scope.changeIssueStatus = changeIssueStatus;
 
         function getIssue() {
-            issuesService.getCurrentUserIssues()
-                .then(function (data) {
-                    authenticationService.getCurrentUserId()
-                        .then(function (id) {
-                            data.Issues.forEach(function (issue) {
+            issuesService.getIssueById($routeParams.id)
+                .then(function (issue) {
+                    $scope.availableStatuses = issue.AvailableStatuses;
+                    console.log(issue)
+                    console.log($scope.availableStatuses)
+                    usersService.getCurrentUserInfo()
+                        .then(function (user) {
                                 projectsService.getProjectById(issue.Project.Id)
                                     .then(function (response) {
-                                        $scope.isLead = (response.data.Lead.Id === id);
-                                        $scope.isAssignee = (issue.Assignee.Id === id);
+                                        $scope.isLead = (response.data.Lead.Id === user.Id);
+                                        $scope.isAssignee = (issue.Assignee.Id === user.Id);
                                         $scope.isAdmin = issue.Assignee.isAdmin;
                                     });
                                 $scope.issue = issuesService.transformLabels(issue);
                                 issuesService.getIssueComments(issue.Id)
                                     .then(function (comments) {
+                                        console.log(comments)
                                         $scope.issue.Comments = comments.data;
                                     }, function (error) {
                                         deferred.reject(error);
                                     });
                             })
-                        });
-
                 });
 
             $scope.addComment = function (comment) {
                 issuesService.addComment($routeParams.id, comment)
                     .then(function (response) {
-                        toaster.pop('success', 'Comment added successfully', defaultNotificationTimeout);
-                        $scope.issue.Comments = response.data;
+                        toaster.pop('success', 'Comment added successfully', null, defaultNotificationTimeout);
+                        $scope.comment = response.data;
                     }, function (error) {
-                        toaster.pop('error', 'Error', defaultNotificationTimeout);
+                        toaster.pop('error', 'Error', null, defaultNotificationTimeout);
                     })
             };
-            $scope.changeIssueStatus = changeIssueStatus;
+        }
+
+        function changeIssueStatus(issueId, statusId) {
+            issuesService.editIssueCurrentStatus(issueId, statusId)
+                .then(function (response) {
+                    toaster.pop('success', 'Successfully applied issue status', null, defaultNotificationTimeout);
+                    $route.reload();
+                }, function (error) {
+                    toaster.pop('error', 'Error', null, defaultNotificationTimeout);
+                })
         }
     }
 }());

@@ -52,7 +52,7 @@
             })
             .when('/projects/:id/add-issue', {
                 templateUrl: 'app/components/projects/projects-templates/add-issue-to-project.html',
-                controller: 'AddIssueToProjectController',
+                controller: 'AddIssueController',
                 resolve : routeChecks.authenticated
             })
     }

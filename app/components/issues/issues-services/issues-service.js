@@ -71,6 +71,7 @@
             $http.get(BASE_URL + 'issues/' + id)
                // {headers: authHeader()})
                 .then(function (response) {
+                    console.log(response.data)
                     deferred.resolve(response.data);
                 }, function (error) {
                     deferred.reject(error);
@@ -136,13 +137,15 @@
 
         function manageLabels(issue){
             var labels = [];
-            issue.Labels.split(', ').forEach(function (label, key) {
-                labels.push({
-                    Id: key,
-                    Name: label
-                })
-            });
-            issue.Labels = labels;
+            if (issue.labels !== undefined) {
+                issue.Labels.split(', ').forEach(function (label, key) {
+                    labels.push({
+                        Id: key,
+                        Name: label
+                    })
+                });
+                issue.Labels = labels;
+            }
 
             return issue;
         }
@@ -164,6 +167,7 @@
             $http.post(BASE_URL + 'issues/' + id + '/comments', data)
                 //{headers: authHeader()})
                 .then(function (response) {
+                    console.log(response)
                     deferred.resolve(response);
                 }, function (error) {
                     deferred.reject(error);

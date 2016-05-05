@@ -44,7 +44,8 @@ body>div>div.row {
 }
 
 .user-dashboard {
-    margin: 160px;
+    margin-left: 160px;
+    margin-right: 160px;
     margin-top: 30px;
     margin-bottom: 30px;
     background-color: #f7f7f7;
@@ -76,20 +77,29 @@ body>div>div.row {
     padding-top: 20px;
 }
 
-button {
+.common {
     margin-top: 20px;
     margin-left: 20px;
     float: left;
+}
+
+.status {
+    float: right;
 }
 
 .item-atr {
     font-weight:bold;
 }
 
-.comments-box {
-    padding-left: 100px;
-    padding-right: 100px;
+.comment {
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
 
+hr {
+    background-color: green;
+    height: 1px;
+    border: 0;
 }
 
 .navbar img {
