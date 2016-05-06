@@ -40,6 +40,7 @@
                         .then(function (user) {
                                 projectsService.getProjectById(issue.Project.Id)
                                     .then(function (response) {
+                                        console.log(response)
                                         $scope.isLead = (response.data.Lead.Id === user.Id);
                                         $scope.isAssignee = (issue.Assignee.Id === user.Id);
                                         $scope.isAdmin = issue.Assignee.isAdmin;
@@ -56,10 +57,14 @@
                 });
 
             $scope.addComment = function (comment) {
-                issuesService.addComment($routeParams.id, comment)
+                var commentModel = {
+                    Text : comment.Text
+                };
+                issuesService.addComment($routeParams.id, commentModel)
                     .then(function (response) {
+                        $route.reload();
                         toaster.pop('success', 'Comment added successfully', null, defaultNotificationTimeout);
-                        $scope.comment = response.data;
+                        $scope.comment = response.data.Text;
                     }, function (error) {
                         toaster.pop('error', 'Error', null, defaultNotificationTimeout);
                     })

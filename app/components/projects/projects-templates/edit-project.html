@@ -1,7 +1,10 @@
 <div class="user-dashboard">
+    <a class="btn btn-md btn-success common" href="#/">Dashboard</a>
+    <a class="btn btn-md btn-success common" href="#/projects" ng-if="isAdmin">Projects</a>
+    <br>
     <h3> Edit Project</h3>
     <div>
-        <form name="edit-project-form" class="edit-form">
+        <form name="edit-project-form" class="edit-form"">
             <h2>{{project.Name}}</h2>
             <div class="form-group">
                 <label for="projectName">Name</label>
@@ -9,10 +12,10 @@
             </div>
             <div class="form-group">
                 <label for="projectLeader">Leader</label>
-                <select ng-model="project.Lead.Id"  id="projectLeader" class="form-control"
-                        ng-options="user as user.Username for user in users track by user.Id"
+                <select ng-model="projectCurrentLeadId"  id="projectLeader" class="form-control"
+                        ng-options="user.Id as user.Username for user in users"
                         ng-disabled="!isAdmin">
-                    <option value="">-- Select Leader --</option>
+                    <option value="projectCurrentLeadId">-- Select Leader --</option>
                 </select>
             </div>
             <div class="form-group">

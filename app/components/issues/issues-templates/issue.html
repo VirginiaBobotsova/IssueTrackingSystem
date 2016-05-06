@@ -1,4 +1,7 @@
 <div class="user-dashboard">
+    <a class="btn btn-md btn-success common" href="#/">Dashboard</a>
+    <a class="btn btn-md btn-success common" href="#/projects" ng-if="isAdmin">Projects</a>
+    <br>
     <h3>Issue page</h3>
     <br />
     <div class="row">
@@ -21,15 +24,15 @@
             <div class="comments-box">
                 <div>
                     <div ng-if="issue.Comments" ng-repeat="comment in issue.Comments">
-                        <h4>{{comment.Author.Username}} - {{comment.CreatedOn}}</h4>
+                        <h6>{{comment.Author.Username}} - {{comment.CreatedOn}}</h6>
                         <p>{{comment.Text}}</p>
-                        <br />
+                        <hr />
                     </div>
                 </div>
                 <hr>
-                <div class="form-group" ng-if="isAdmin || isLead || isAssignee">
+                <div class="form-group" ng-if="isLead || isAssignee">
                     <label for="issueCommentInput" class="item-atr">Text: </label>
-                    <textarea id="issueCommentInput" class="form-control" placeholder="Your comment..." ng-model="comment"></textarea>
+                    <textarea id="issueCommentInput" class="form-control" placeholder="Your comment..." ng-model="comment.Text"></textarea>
                     <button type="submit" class="btn btn-success comment" ng-click="addComment(comment)">Add Comment</button>
                 </div>
             </div>

@@ -138,7 +138,7 @@
         function manageLabels(issue){
             var labels = [];
             if (issue.labels !== undefined) {
-                issue.Labels.split(', ').forEach(function (label, key) {
+                issue.Labels.split(', ').forEach(function (key, label) {
                     labels.push({
                         Id: key,
                         Name: label

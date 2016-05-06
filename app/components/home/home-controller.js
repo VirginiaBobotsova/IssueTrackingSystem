@@ -47,13 +47,6 @@
             $scope.attachUserAssignedIssues = attachUserAssignedIssues();
 
             $scope.isAdmin = usersService.isAdministrator();
-
-           // $scope.addProjectRedirect = function () {
-             //   $location.path('projects/add');
-            //};
-            //$scope.addIssueRedirect = function () {
-              //  $location.path('issues/add');
-            //};
         } else {
             $scope.register = register;
             $scope.login = login;

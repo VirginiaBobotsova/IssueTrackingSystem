@@ -28,77 +28,81 @@
         toaster) {
         var defaultNotificationTimeout = 2000;
 
-        editIssue();
+        $scope.isAdmin = usersService.isAdministrator();
 
-        function attachProjectPriorities(id) {
-            var project = $scope.projects.filter(function (project) {
-                return project.Id == id;
-            })[0];
-            $scope.issue.Priorities = project.Priorities;
+        issuesService.getIssueById($routeParams.id)
+            .then(function (issue) {
+                //console.log(issue)
+                if(!$scope.isAdmin){
+                    usersService.getCurrentUserInfo()
+                        .then(function (user) {
+                            projectsService.getAllProjects()
+                                .then(function (projects) {
+                                    console.log(projects)
+                                    var currentProject = projects.data.filter(function (project) {
+                                        return project.Id === issue.Project.Id
+                                    })[0];
+                                    $scope.isLead = (currentProject.Lead.Id === user.Id);
+                                    if(!$scope.isLead){
+                                        toaster.pop('error', 'Unauthorized', null, defaultNotificationTimeout);
+                                        $location.path('/');
+                                        return;
+                                    }
+
+                                    $scope.projects = projects.data;
+                                    attachProjectPriorities(issue.Project.Id)
+                                });
+                        });
+                }
+                $scope.issue = issuesService.transformLabels(issue.data);
+            });
+
+        usersService.getUsers()
+            .then(function (users) {
+                $scope.users = users;
+            });
+
+        $scope.editIssue = editIssue;
+        $scope.changeIssueStatus = changeIssueStatus;
+
+        function editIssue(issue) {
+            var issueModel = {
+                Title: issue.Title,
+                Description: issue.Description,
+                DueDate: issue.DueDate,
+                ProjectId: issue.Project.Id,
+                AssigneeId: issue.Assignee.Id,
+                PriorityId: issue.Priority.Id,
+                Labels: issue.Labels
+            };
+
+            issuesService.editIssue(issueModel)
+                .then(function (success) {
+                    $route.reload();
+                    toaster.pop('success', 'Issue edited successfully', null, defaultNotificationTimeout);
+                }, function (error) {
+                    toaster.pop('error', 'Error', null, defaultNotificationTimeout);
+                });
         }
 
-        function changeIssueStatus(issueId, statusId) {
-            issuesService.changeIssueStatus(issueId, statusId)
-                .then(function (response) {
-                    toaster.pop('success', 'Successfully applied issue status', defaultNotificationTimeout);
-                    $route.reload();
-                }, function (error) {
-                    toaster.pop('error', 'Error', defaultNotificationTimeout);
+        function attachProjectPriorities(projectId) {
+            projectsService.getProjectById(projectId)
+                .then(function(project) {
+                    console.log(project)
+                    $scope.issue.Priorities = project.data.Priorities;
                 })
         }
 
-        function editIssue() {
-            issuesService.getIssueById($routeParams.id)
-                .then(function (issue) {
-                    if(!$scope.isAdmin){
-                        authenticationService.getCurrentUserId()
-                            .then(function (id) {
-                                projectsService.getAllProjects()
-                                    .then(function (projects) {
-                                        var currentProject = projects.data.filter(function (project) {
-                                            return project.Id === issue.data.Project.Id
-                                        })[0];
-                                        $scope.isLead = (currentProject.Lead.Id === id);
-                                        if(!$scope.isLead){
-                                            $location.path('/');
-                                            toaster.pop('error', 'Unauthorized', defaultNotificationTimeout);
-                                            return;
-                                        }
-
-                                        $scope.projects = projects.data;
-                                        attachProjectPriorities(issue.data.Project.Id);
-                                    });
-                            });
-                    }
-                    $scope.issue = issuesService.transformLabels(issue.data);
-                    usersService.getUsers()
-                        .then(function (users) {
-                            $scope.users=users;
-                        });
-
-                });
-
-            $scope.changeIssueStatus = changeIssueStatus;
-            $scope.editIssue = function (issue) {
-                var issueModel = {
-                    Id: issue.Id,
-                    Title: issue.Title,
-                    Description: issue.Description,
-                    DueDate: issue.DueDate,
-                    AssigneeId: issue.Assignee.Id,
-                    PriorityId: issue.Priority.Id,
-                    Labels: issue.Labels
-                };
-
-                issuesService.editIssue(issueModel)
-                    .then(function (success) {
-                        $route.reload();
-                        toaster.pop('success', 'Issue edited successfully');
-                    }, function (error) {
-                        toaster.pop('error', 'Error', defaultNotificationTimeout);
-                    });
-            };
+        function changeIssueStatus(issueId, statusId) {
+            issuesService.editIssueCurrentStatus(issueId, statusId)
+                .then(function (response) {
+                    toaster.pop('success', 'Successfully applied issue status', null, defaultNotificationTimeout);
+                    $route.reload();
+                }, function (error) {
+                    toaster.pop('error', 'Error', null, defaultNotificationTimeout);
+                })
         }
+
     }
 }());
 

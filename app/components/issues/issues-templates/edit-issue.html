@@ -1,25 +1,31 @@
-<div>
-    <div class="user-dashboard">
-        <h3> Edit Issue</h3>
+<div class="user-dashboard">
+    <a class="btn btn-md btn-success common" href="#/">Dashboard</a>
+    <a class="btn btn-md btn-success common" href="#/projects" ng-if="isAdmin">Projects</a>
+    <br>
+    <h3>Edit Issue</h3>
+    <div class="row">
         <fieldset class="col-md-6">
+            <form name="edit-issue-form" class="edit-form">
             <div class="form-group">
                 <label for="issueTitle">Title</label>
                 <input type="text" class="form-control" id="issueTitle" ng-model="issue.Title" placeholder="Issue Title">
             </div>
             <div class="form-group">
                 <label for="issueAssignee">Assignee</label>
-                <select id="issueAssignee" ng-model="issue.Assignee.Id" class="form-control">
-                    <option ng-repeat="user in users" value="{{user.Id}}" >{{user.Username}}</option>
+                <select id="issueAssignee" ng-model="issue.Assignee.Id" ng-options="user.Id as user.Username for user in users" class="form-control">
+                    <option value="">-- Select Assignee --</option>
                 </select>
             </div>
             <div class="form-group">
                 <label for="issueProject">Project</label>
                 <select ng-disabled="!isAdmin" id="issueProject" ng-model="issue.Project.Id" class="form-control" ng-options="project.Id as project.Name for project in projects">
+                    <option value="">-- Select Project --</option>
                 </select>
             </div>
             <div class="form-group">
                 <label for="issuePriority">Priority</label>
                 <select ng-model="issue.Priority.Id" id="issuePriority" class="form-control" ng-options="priority.Id as priority.Name for priority in issue.Priorities">
+                    <option value="">-- Select Priority --</option>
                 </select>
             </div>
             <div class="form-group">
@@ -31,22 +37,21 @@
                 <textarea id="issueDescription" class="form-control" placeholder="Description" ng-model="issue.Description"></textarea>
             </div>
             <div class="form-group">
-                <label for="exampleInputPassword1">Labels (comma separated)</label>
-                <input type="text" class="form-control" ng-model="issue.Labels" id="exampleInputPassword1" placeholder="Labels">
+                <label for="issueLabels">Labels (comma separated)</label>
+                <input type="text" class="form-control" ng-model="issue.Labels" id="issueLabels" placeholder="Labels">
                 <br>
             </div>
             <button type="submit" class="btn btn-success" ng-click="editIssue(issue)">Edit Issue</button>
+                </form>
         </fieldset>
 
-        <div class="item col-md-6 panel">
+        <div class="col-sm-4 col-sm-offset-1 col-md-3 col-md-offset-1 col-lg-3 col-lg-offset-1" ng-if="isAdmin || isLead || isAssignee">
             <h3>Available statuses:</h3>
-            <div ng-repeat="status in issue.AvailableStatuses">
-                <span class="col-md-4">-----{{status.Name}}</span>
-                <button ng-click="changeIssueStatus(issue.Id, status.Id)" class="btn btn-md btn-primary">Change</button>
-
-            </div>
+            <ul ng-repeat="status in availableStatuses">
+                <li>
+                    <span>{{status.Name}}  </span><button ng-click="changeIssueStatus(issue.Id, status.Id)" class="btn btn-sm btn-success">Change</button>
+                </li>
+            </ul>
         </div>
-
-
     </div>
 </div>

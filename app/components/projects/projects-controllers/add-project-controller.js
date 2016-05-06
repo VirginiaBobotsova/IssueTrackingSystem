@@ -22,20 +22,32 @@
         toaster) {
         var defaultNotificationTimeout = 2000;
 
-        $scope.isAdmin = authenticationService.isAdministrator();
+        $scope.isAdmin = usersService.isAdministrator();
 
-            usersService.getUsers()
-                .then(function (users) {
-                    $scope.users = users;
+        usersService.getUsers()
+            .then(function (users) {
+                $scope.users = users;
+            });
+
+        $scope.addProject = addProject;
+
+        function addProject(project) {
+            project.ProjectKey = $scope.project.Name.match(/\b(\w)/g).join('');
+            var projectModel = {
+                Name : project.Name,
+                Description : project.Description,
+                ProjectKey : project.ProjectKey,
+                Labels : project.Labels,
+                Priorities : project.Priorities,
+                LeadId : project.Lead.Id
+            };
+            projectsService.addProject(projectModel)
+                .then(function (response) {
+                    $location.path('#/projects/' + response.data.Id);
+                    toaster.pop('success', 'Project edited successfully', null, defaultNotificationTimeout);
+                }, function (error) {
+                    toaster.pop('error', 'Error', null, defaultNotificationTimeout)
                 });
-            $scope.addProject = function (project) {
-                projectsService.addProject(project)
-                    .then(function (response) {
-                        $location.path('#/projects/' + response.data.Id);
-                        toaster.pop('success', 'Project edited successfully', defaultNotificationTimeout);
-                    }, function (error) {
-                        toaster.pop('error', 'Error', defaultNotificationTimeout)
-                    });
-            }
+        }
     }
 }());

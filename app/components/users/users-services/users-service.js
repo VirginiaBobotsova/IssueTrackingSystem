@@ -76,6 +76,7 @@
 
         function isAdministrator() {
             getCurrentUserInfo().then(function (success) {
+                console.log(success.isAdmin)
                 return success.isAdmin;
             })
         }

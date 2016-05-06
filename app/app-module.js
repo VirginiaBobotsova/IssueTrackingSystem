@@ -24,6 +24,4 @@
             authenticationService.refreshCookie();
         }])
         .constant('BASE_URL', 'http://softuni-issue-tracker.azurewebsites.net/');
-
-
 }());

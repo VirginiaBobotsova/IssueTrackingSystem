@@ -1,5 +1,8 @@
 <div>
     <div class="user-dashboard">
+        <a class="btn btn-md btn-success common" href="#/">Dashboard</a>
+        <a class="btn btn-md btn-success common" href="#/projects" ng-if="isAdmin">Projects</a>
+        <br>
         <h3>New Project</h3>
         <form name="add-project-form" class="add-form">
             <div class="form-group">
@@ -8,17 +11,17 @@
             </div>
             <div class="form-group">
                 <label for="projectLeader">Leader</label>
-                <select ng-model="project.LeadId" id="projectLeader" class="form-control">
-                    <option  value="{{user.Id}}" ng-repeat="user in users">{{user.Username}}</option>
+                <select ng-model="project.Lead.Id" id="projectLeader" ng-options="user.Id as user.Name for user in users" class="form-control">
+                    <option  value="">-- Select Project Leader --</option>
                 </select>
             </div>
             <div class="form-group">
                 <label for="projectPriorities">Priorities (comma separated)</label>
-                <input ng-model="project.Priorities" type="text" class="form-control" id="projectPriorities" placeholder="Available Priorities For The Issues" value="Low, Medium, Urgent">
+                <input ng-model="project.Priorities" type="text" class="form-control" id="projectPriorities" placeholder="Priorities" value="Low, Medium, Urgent">
             </div>
             <div class="form-group">
                 <label for="projectLabels">Labels (comma separated)</label>
-                <input ng-model="project.Labels" type="text" class="form-control" id="projectLabels" placeholder="Labels" value="Soft">
+                <input ng-model="project.Labels" type="text" class="form-control" id="projectLabels" placeholder="Labels" value="">
                 <br>
             </div>
             <div class="form-group">
