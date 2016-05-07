@@ -8,7 +8,6 @@
             'issueTrackingSystem.users.usersService',
             'issueTrackingSystem.issues.issuesService',
             'issueTrackingSystem.projects.projectsService',
-            'toaster',
             'ui.bootstrap'])
         .controller('HomeController', homeController);
 
