@@ -16,26 +16,27 @@
         '$scope',
         '$log',
         '$route',
-        'identificationService',
         'authenticationService',
         'usersService',
         'issuesService',
         'projectsService',
-        'toaster'];
+        'notifyService'];
 
     function homeController(
         $scope,
         $log,
         $route,
-        identificationService,
         authenticationService,
         usersService,
         issuesService,
         projectsService,
-        toaster) {
-        var defaultNotificationTimeout = 2000;
-
+        notifyService) {
         if(authenticationService.isAuthenticated()){
+            usersService.getCurrentUserInfo()
+                .then(function (data) {
+                $scope.isAdmin = data.isAdmin;
+            });
+
             $scope.issuesParams = {
                 pageSize : 3,
                 pageNumber : 1,
@@ -45,8 +46,6 @@
             attachUserIssuesAndProjects();
 
             $scope.attachUserAssignedIssues = attachUserAssignedIssues();
-
-            $scope.isAdmin = usersService.isAdministrator();
         } else {
             $scope.register = register;
             $scope.login = login;
@@ -56,10 +55,9 @@
             authenticationService.register(user)
                 .then(function (responce) {
                     login(user);
-                    toaster.pop('success', 'Register successful!', null, defaultNotificationTimeout);
                 },
                function (error) {
-                   toaster.pop('error', 'Registration error!', error.data, defaultNotificationTimeout);
+                   notifyService.showError('Registration error!');
               });
         }
 
@@ -67,9 +65,9 @@
             authenticationService.login(user)
                 .then(function (data) {
                     $route.reload();
-                    toaster.pop('success', 'Login successful!', null, defaultNotificationTimeout);
+                    notifyService.showInfo('Welcome to Issue Tracking System!');
                 }, function (error) {
-                    toaster.pop('error', 'Login error!', null, defaultNotificationTimeout);
+                    notifyService.showError('An error occurred, please try again!');
                 });
         }
 
@@ -115,7 +113,7 @@
                             });
                         }
                     });
-                    console.log(projects)
+
                     usersService.getCurrentUserInfo()
                         .then(function (data) {
                             projectsService.getUserRelatedProjects(data.Id)

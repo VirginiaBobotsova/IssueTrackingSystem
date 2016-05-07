@@ -12,7 +12,7 @@
             'usersService',
             'projectsService',
             'issuesService',
-            'toaster'];
+            'notifyService'];
 
     function getIssueController(
         $scope,
@@ -21,9 +21,7 @@
         usersService,
         projectsService,
         issuesService,
-        toaster) {
-        var defaultNotificationTimeout = 2000;
-
+        notifyService) {
         getIssue();
 
         $scope.changeIssueStatus = changeIssueStatus;
@@ -31,14 +29,12 @@
         function getIssue() {
             issuesService.getIssueById($routeParams.id)
                 .then(function (issue) {
-                    $scope.availableStatuses = issue.AvailableStatuses;
-                    console.log(issue)
-                    console.log($scope.availableStatuses)
+                    $scope.availableStatuses = issue.AvailableStatuses
                     usersService.getCurrentUserInfo()
                         .then(function (user) {
                                 projectsService.getProjectById(issue.Project.Id)
                                     .then(function (response) {
-                                        console.log(response)
+                                        $scope.projectId = response.data.Id;
                                         $scope.isLead = (response.data.Lead.Id === user.Id);
                                         $scope.isAssignee = (issue.Assignee.Id === user.Id);
                                         $scope.isAdmin = issue.Assignee.isAdmin;
@@ -46,7 +42,6 @@
                                 $scope.issue = issuesService.transformLabels(issue);
                                 issuesService.getIssueComments(issue.Id)
                                     .then(function (comments) {
-                                        console.log(comments)
                                         $scope.issue.Comments = comments.data;
                                     }, function (error) {
                                         deferred.reject(error);
@@ -61,10 +56,10 @@
                 issuesService.addComment($routeParams.id, commentModel)
                     .then(function (response) {
                         $route.reload();
-                        toaster.pop('success', 'Comment added successfully', null, defaultNotificationTimeout);
+                        notifyService.showInfo('The comment is added successfully');
                         $scope.comment = response.data.Text;
                     }, function (error) {
-                        toaster.pop('error', 'Error', null, defaultNotificationTimeout);
+                        notifyService.showError('An error occurred');
                     })
             };
         }
@@ -72,10 +67,10 @@
         function changeIssueStatus(issueId, statusId) {
             issuesService.editIssueCurrentStatus(issueId, statusId)
                 .then(function (response) {
-                    toaster.pop('success', 'Successfully applied issue status', null, defaultNotificationTimeout);
                     $route.reload();
+                    notifyService.showInfo('The issue status is successfully applied');
                 }, function (error) {
-                    toaster.pop('error', 'Error', null, defaultNotificationTimeout);
+                    notifyService.showError('An error occurred');
                 })
         }
     }

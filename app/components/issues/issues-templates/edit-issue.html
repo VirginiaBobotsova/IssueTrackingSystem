@@ -1,4 +1,5 @@
 <div class="user-dashboard">
+    <a class="btn btn-md btn-success common" href="#/projects/{{currentProjectId}}">Go Back To Project</a>
     <a class="btn btn-md btn-success common" href="#/">Dashboard</a>
     <a class="btn btn-md btn-success common" href="#/projects" ng-if="isAdmin">Projects</a>
     <br>
@@ -6,43 +7,44 @@
     <div class="row">
         <fieldset class="col-md-6">
             <form name="edit-issue-form" class="edit-form">
-            <div class="form-group">
-                <label for="issueTitle">Title</label>
-                <input type="text" class="form-control" id="issueTitle" ng-model="issue.Title" placeholder="Issue Title">
-            </div>
-            <div class="form-group">
-                <label for="issueAssignee">Assignee</label>
-                <select id="issueAssignee" ng-model="issue.Assignee.Id" ng-options="user.Id as user.Username for user in users" class="form-control">
-                    <option value="">-- Select Assignee --</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="issueProject">Project</label>
-                <select ng-disabled="!isAdmin" id="issueProject" ng-model="issue.Project.Id" class="form-control" ng-options="project.Id as project.Name for project in projects">
-                    <option value="">-- Select Project --</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="issuePriority">Priority</label>
-                <select ng-model="issue.Priority.Id" id="issuePriority" class="form-control" ng-options="priority.Id as priority.Name for priority in issue.Priorities">
-                    <option value="">-- Select Priority --</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="issueDueDate">Due Date</label>
-                <input type="text" class="form-control" id="issueDueDate" ng-model="issue.DueDate" placeholder="mm/dd/yyyy">
-            </div>
-            <div class="form-group">
-                <label for="issueDescription">Description</label>
-                <textarea id="issueDescription" class="form-control" placeholder="Description" ng-model="issue.Description"></textarea>
-            </div>
-            <div class="form-group">
-                <label for="issueLabels">Labels (comma separated)</label>
-                <input type="text" class="form-control" ng-model="issue.Labels" id="issueLabels" placeholder="Labels">
-                <br>
-            </div>
-            <button type="submit" class="btn btn-success" ng-click="editIssue(issue)">Edit Issue</button>
-                </form>
+                <h2>{{issue.Title}}</h2>
+                <div class="form-group">
+                    <label for="issueTitle">Title</label>
+                    <input type="text" class="form-control" id="issueTitle" ng-model="issue.Title" placeholder="Issue Title" value="">
+                </div>
+                <div class="form-group">
+                    <label for="issueAssignee">Assignee</label>
+                    <select id="issueAssignee" ng-model="issue.Assignee.Id" ng-options="user.Id as user.Username for user in users" class="form-control">
+                        <option value="">-- Select Assignee --</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="issueProject">Project</label>
+                    <select ng-disabled="!isAdmin" id="issueProject" ng-model="currentProjectId" class="form-control" ng-options="project.Id as project.Name for project in projects">
+                        <option value="currentProjectId">-- Select Project --</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="issuePriority">Priority</label>
+                    <select ng-model="issue.Priority.Id" id="issuePriority" class="form-control" ng-options="priority.Id as priority.Name for priority in issue.Priorities">
+                        <option value="">-- Select Priority --</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="issueDueDate">Due Date</label>
+                    <input type="text" class="form-control" id="issueDueDate" ng-model="issue.DueDate" placeholder="mm/dd/yyyy">
+                </div>
+                <div class="form-group">
+                    <label for="issueDescription">Description</label>
+                    <textarea id="issueDescription" class="form-control" placeholder="Description" ng-model="issue.Description"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="issueLabels">Labels (comma separated)</label>
+                    <input type="text" class="form-control" ng-model="issue.Labels" id="issueLabels" placeholder="Labels">
+                    <br>
+                </div>
+                <button type="submit" class="btn btn-success" ng-click="editIssue(issue)">Edit Issue</button>
+            </form>
         </fieldset>
 
         <div class="col-sm-4 col-sm-offset-1 col-md-3 col-md-offset-1 col-lg-3 col-lg-offset-1" ng-if="isAdmin || isLead || isAssignee">

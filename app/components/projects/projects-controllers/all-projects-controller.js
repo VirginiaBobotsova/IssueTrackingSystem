@@ -14,7 +14,10 @@
         $scope,
         projectsService,
         usersService) {
-        $scope.isAdmin = usersService.isAdministrator();
+        usersService.getCurrentUserInfo()
+            .then(function (data) {
+            $scope.isAdmin = data.isAdmin;
+        });
 
         projectsService.getAllProjects()
             .then(function (projects) {

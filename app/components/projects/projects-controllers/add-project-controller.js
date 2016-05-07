@@ -10,21 +10,21 @@
         '$location',
         'usersService',
         'projectsService',
-        'toaster'];
+        'notifyService'];
 
     function addProjectController(
         $scope,
         $location,
         usersService,
         projectsService,
-        toaster) {
-        var defaultNotificationTimeout = 2000;
-
-        $scope.isAdmin = usersService.isAdministrator();
+        notifyService) {
+        usersService.getCurrentUserInfo()
+            .then(function (data) {
+            $scope.isAdmin = data.isAdmin;
+        });
 
         usersService.getUsers()
             .then(function (users) {
-                console.log(users)
                 $scope.users = users;
             });
 
@@ -33,6 +33,7 @@
         function addProject(project) {
             project.ProjectKey = $scope.project.Name.match(/\b(\w)/g).join('');
             var projectModel = {
+                Id : project.Id,
                 Name : project.Name,
                 Description : project.Description,
                 ProjectKey : project.ProjectKey,
@@ -41,11 +42,11 @@
                 LeadId : project.Lead.Id
             };
             projectsService.addProject(projectModel)
-                .then(function (response) {
-                    $location.path('#/projects/' + response.data.Id);
-                    toaster.pop('success', 'The project is added successfully', null, defaultNotificationTimeout);
+                .then(function (success) {
+                    $location.path('/projects/' + success.data.Id);
+                    notifyService.showInfo('The project is added successfully');
                 }, function (error) {
-                    toaster.pop('error', 'An error occurred', null, defaultNotificationTimeout)
+                    notifyService.showError('An error occurred');
                 });
         }
     }

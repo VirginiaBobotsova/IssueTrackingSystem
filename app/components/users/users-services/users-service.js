@@ -16,7 +16,6 @@
             getUsers: getUsers,
             editUser: editUser,
             changePassword: changePassword,
-            isAdministrator : isAdministrator,
             makeAdministrator : makeAdministrator
         };
 
@@ -65,12 +64,6 @@
 
             return deferred.promise;
 
-        }
-
-        function isAdministrator() {
-            getCurrentUserInfo().then(function (success) {
-                return success.isAdmin;
-            })
         }
 
         function makeAdministrator(userId) {

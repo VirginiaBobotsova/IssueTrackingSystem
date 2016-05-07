@@ -10,24 +10,22 @@
         '$route',
         '$location',
         'authenticationService',
-        'toaster'];
+        'notifyService'];
 
     function logoutUser(
       $scope,
       $route,
       $location,
       authenticationService,
-      toaster) {
-      var defaultNotificationTimeout = 2000;
+      notifyService) {
+          $scope.logout = logout;
 
-      $scope.logout = logout;
-
-      function logout() {
-          authenticationService.logout()
-          $scope.isAuthenticated = false;
-          $route.reload();
-          //$location.path('/');
-          toaster.pop('success', 'Logout successful!', null, defaultNotificationTimeout);
-      }
+          function logout() {
+              authenticationService.logout();
+              $scope.isAuthenticated = false;
+              $route.reload();
+              //$location.path('/');
+              notifyService.showInfo('Logout successful!');
+          }
    }
 }());

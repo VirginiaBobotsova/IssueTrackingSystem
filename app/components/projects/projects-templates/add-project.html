@@ -11,7 +11,7 @@
             </div>
             <div class="form-group">
                 <label for="projectLeader">Leader</label>
-                <select ng-model="project.Lead.Id" id="projectLeader" ng-options="user.Id as user.Name for user in users" class="form-control">
+                <select ng-model="project.Lead.Id" id="projectLeader" ng-options="user.Id as user.Username for user in users" class="form-control">
                     <option  value="">-- Select Project Leader --</option>
                 </select>
             </div>
@@ -28,10 +28,7 @@
                 <label for="projectDescription">Description</label>
                 <textarea id="projectDescription" ng-model="project.Description" class="form-control" placeholder="Description"></textarea>
             </div>
-            <button type="submit" class="btn btn-success" ng-disabled="!project.Name
-                        ||!project.Description
-                        ||!project.LeadId
-                        ||add-project-form.$invalid"
+            <button type="submit" class="btn btn-success"
                     ng-click="addProject(project)">Add Project</button>
         </form>
     </div>

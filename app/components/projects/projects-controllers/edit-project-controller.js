@@ -11,7 +11,7 @@
         '$location',
         'usersService',
         'projectsService',
-        'toaster'];
+        'notifyService'];
 
     function editProjectController(
         $scope,
@@ -19,9 +19,7 @@
         $location,
         usersService,
         projectsService,
-        toaster) {
-        var defaultNotificationTimeout = 2000;
-
+        notifyService) {
         projectsService.getProjectById($routeParams.id)
             .then(function (project) {
                 usersService.getCurrentUserInfo()
@@ -31,7 +29,7 @@
                         if(!$scope.isAdmin) {
                             if (!$scope.isLead) {
                                 $location.path('/');
-                                toaster.pop('error', 'Unauthorized', null, defaultNotificationTimeout);
+                                notifyService.showError('Unauthorized');
                                 return;
                             }
                         }
@@ -52,6 +50,7 @@
             project.ProjectKey = $scope.project.ProjectKey;
             project.projectLeadId = $scope.projectCurrentLeadId;
             var projectModel = {
+                Id : project.Id,
                 Name : project.Name,
                 Description : project.Description,
                 ProjectKey : project.ProjectKey,
@@ -61,10 +60,10 @@
             };
             projectsService.editProject(projectModel)
                 .then(function (success) {
-                    toaster.pop('success', 'Project is edited successfully', null, defaultNotificationTimeout);
                     $location.path('/projects/' + success.data.Id);
+                    notifyService.showInfo('Project is edited successfully')
                 }, function (error) {
-                    toaster.pop('error', 'Error', null, defaultNotificationTimeout);
+                    notifyService.showError('An error occurred');
                 });
         }
     }

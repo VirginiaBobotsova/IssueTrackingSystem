@@ -3,30 +3,28 @@
 
     angular
         .module('issueTrackingSystem.users.changePassword', [])
-        .controller('ChangePasswordController', changeUserPassword);
+        .controller('ChangePasswordController', changeUserPasswordController);
 
-    changeUserPassword.$inject = [
+    changeUserPasswordController.$inject = [
             '$scope',
             '$location',
             'usersService',
-            'toaster'];
+            'notifyService'];
 
-    function changeUserPassword(
+    function changeUserPasswordController(
         $scope,
         $location,
         usersService,
-        toaster) {
-        var defaultNotificationTimeout = 2000;
-
+        notifyService) {
         $scope.changePassword = changePassword;
 
         function changePassword(user) {
             usersService.changePassword(user)
                 .then(function (success) {
-                    toaster.pop('success', 'Successfully changed password', null, defaultNotificationTimeout);
                     $location.path('/');
+                    notifyService.showInfo('The password is successfully changed');
                 }, function (error) {
-                    toaster.pop('error', 'Error', null, defaultNotificationTimeout)
+                    notifyService.showError('An error occurred');
                 });
         }
     }

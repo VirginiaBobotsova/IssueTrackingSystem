@@ -3,24 +3,22 @@
 
     angular
         .module('issueTrackingSystem.users.allUsers', [])
-        .controller('AllUsersController', getAllUsers);
+        .controller('AllUsersController', getAllUsersController);
 
-    getAllUsers.$inject = [
+    getAllUsersController.$inject = [
         '$scope',
         'usersService',
-        'toaster'];
+        'notifyService'];
 
-    function getAllUsers(
+    function getAllUsersController(
         $scope,
         usersService,
-        toaster) {
-        var defaultNotificationTimeout = 2000;
-
+        notifyService) {
         usersService.getUsers()
             .then(function (users) {
                 $scope.users = users;
             }, function (error) {
-                toaster.pop('error', 'Error', null, defaultNotificationTimeout)
+                notifyService.showError('An error occurred')
             });
     }
 }());

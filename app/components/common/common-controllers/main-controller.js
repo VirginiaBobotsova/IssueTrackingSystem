@@ -7,10 +7,9 @@
 
     MainController.$inject = [
         '$scope',
-        'identificationService',
-        'usersService'];
+        'identificationService'];
 
-    function MainController($scope, identificationService, usersService) {
+    function MainController($scope, identificationService) {
         identificationService.getCurrentUser()
             .then(function(user) {
                 $scope.currentUser = user;

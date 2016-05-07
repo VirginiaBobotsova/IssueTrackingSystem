@@ -12,7 +12,7 @@
         'usersService',
         'projectsService',
         'issuesService',
-        'toaster'];
+        'notifyService'];
 
     function addIssueToProjectController(
         $scope,
@@ -21,10 +21,12 @@
         usersService,
         projectsService,
         issuesService,
-        toaster) {
-        var defaultNotificationTimeout = 2000;
+        notifyService) {
+        usersService.getCurrentUserInfo()
+            .then(function (data) {
+            $scope.isAdmin = data.isAdmin;
+        });
 
-        $scope.isAdmin = usersService.isAdministrator();
         projectsService.getProjectById($routeParams.id)
             .then(function (project) {
                 $scope.currentProject = project.data;
@@ -37,7 +39,7 @@
                         });
                     if(!$scope.isLead){
                         $location.path('/');
-                        toaster.pop('error', 'Unauthorized', null, defaultNotificationTimeout);
+                        notifyService.showError('Unauthorized');
                         return;
                     }
                 }
@@ -60,6 +62,7 @@
         function addIssue(issue){
             issue.ProjectId = $scope.currentProject.Id;
             var issueModel = {
+                Id : issue.Id,
                 Title: issue.Title,
                 Description: issue.Description,
                 IssueKey : issue.IssueKey,
@@ -71,8 +74,8 @@
             };
             issuesService.addIssue(issueModel)
                 .then(function (success) {
-                    toaster.pop('success', 'The issue is added successfully');
-                    $location.path('/issues' + success.data.Id);
+                    $location.path('/issues/' + success.data.Id);
+                    notifyService.showInfo('The issue is added successfully');
                 });
         }
 

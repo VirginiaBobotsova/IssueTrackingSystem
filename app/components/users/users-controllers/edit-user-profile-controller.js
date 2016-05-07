@@ -9,22 +9,20 @@
             '$scope',
             '$location',
             'usersService',
-            'toaster'];
+            'notifyService'];
 
     function editUserProfile(
         $scope,
         $location,
         usersService,
-        toaster) {
-        var defaultNotificationTimeout = 2000;
-
+        notifyService) {
         $scope.editUser = function (user) {
             usersService.editUser(user)
                 .then(function (response) {
-                    toaster.pop('success', 'Success', null, defaultNotificationTimeout);
-                    $location.path('/')
+                    $location.path('/');
+                    notifyService.showInfo('Success');
                 }, function (error) {
-                    toaster.pop('error', 'Error', null, defaultNotificationTimeout);
+                    notifyService.showError('An error occurred');
                 });
         };
     }

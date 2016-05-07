@@ -25,15 +25,21 @@
                         $scope.isAdmin = user.isAdmin;
                         $scope.isLead = (project.data.Lead.Id === user.Id);
                         $scope.project = projectsService.transformPrioritiesAndLabels(project.data);
-                        issuesService.getCurrentUserIssues(999, 1)
-                            .then(function (data) {
-                                data.Issues.filter(function (issie) {
-                                    return issie.Project.Id === $routeParams.id
+                        if($scope.isLead || $scope.isAdmin) {
+                            projectsService.getProjectIssues($routeParams.id)
+                                .then(function (data) {
+                                    $scope.projectIssues = data;
                                 });
-                                if($scope.isLead || $scope.isAdmin){
-                                $scope.projectIssues = data.Issues;
-                                }
-                            });
+                        } else {
+                            issuesService.getCurrentUserIssues(999, 1)
+                                .then(function (data) {
+                                    var projectIssues;
+                                    projectIssues = data.Issues.filter(function (issie) {
+                                        return issie.Project.Id === project.Id
+                                    });
+                                    $scope.projectIssues = projectIssues;
+                                });
+                        }
                     });
             })
     }
