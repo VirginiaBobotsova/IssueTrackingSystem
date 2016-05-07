@@ -33,12 +33,12 @@
             .when('/projects', {
                 templateUrl: 'app/components/projects/projects-templates/all-projects.html',
                 controller: 'AllProjectsController',
-                resolve : routeChecks.authorized
+                resolve : routeChecks.authenticated
             })
             .when('/projects/add', {
                 templateUrl: 'app/components/projects/projects-templates/add-project.html',
                 controller: 'AddProjectController',
-                resolve : routeChecks.authorized
+                resolve : routeChecks.authenticated
             })
             .when('/projects/:id', {
                 templateUrl: 'app/components/projects/projects-templates/project.html',

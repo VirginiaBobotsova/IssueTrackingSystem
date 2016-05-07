@@ -18,17 +18,6 @@
             $location.path(attributes.ngRedirectTo);
             });
         }
-
-
-            //return {
-              //  restrict: 'A',
-                //link: function (scope, element, attributes) {
-                  //  element.bind('click', function (event) {
-                    //    //assign ng-Redirect-To attribute value to location
-                      //  $location.path(attributes.ngRedirectTo);
-                    //});
-                //}
-           // }
-        }
+    }
 }());
 

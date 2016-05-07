@@ -48,5 +48,4 @@
             return userProfileDeferred.promise;
         }
     }
-
 }());

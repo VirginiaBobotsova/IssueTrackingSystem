@@ -3,16 +3,16 @@
 
     angular
         .module('issueTrackingSystem.projects.getProject', [])
-        .controller('ProjectController', getProject);
+        .controller('ProjectController', getProjectController);
 
-    getProject.$inject = [
+    getProjectController.$inject = [
         '$scope',
         '$routeParams',
         'projectsService',
         'issuesService',
         'usersService'];
 
-    function getProject(
+    function getProjectController(
         $scope,
         $routeParams,
         projectsService,
@@ -22,6 +22,7 @@
             .then(function (project) {
                 usersService.getCurrentUserInfo()
                     .then(function (user) {
+                        $scope.isAdmin = user.isAdmin;
                         $scope.isLead = (project.data.Lead.Id === user.Id);
                         $scope.project = projectsService.transformPrioritiesAndLabels(project.data);
                         issuesService.getCurrentUserIssues(999, 1)

@@ -20,10 +20,6 @@
             makeAdministrator : makeAdministrator
         };
 
-        //function authHeader() {
-          //  return {Authorization: sessionStorage['access_token']};
-        //}
-
         function getCurrentUserInfo() {
             var deferred = $q.defer();
             $http.get(BASE_URL + 'users/me/')
@@ -39,7 +35,6 @@
         function getUsers() {
             var deferred = $q.defer();
             $http.get(BASE_URL + 'users')
-                //{headers: authHeader()})
                 .then(function (response) {
                     deferred.resolve(response.data);
                 }, function (error) {
@@ -51,7 +46,6 @@
         function editUser(data) {
             var deferred = $q.defer();
             $http.put(BASE_URL + 'me', data)
-                //{headers: authHeader()})
                 .then(function (response) {
                     deferred.resolve(response);
                 }, function (error) {
@@ -63,7 +57,6 @@
         function changePassword(data) {
             var deferred = $q.defer();
             $http.post(BASE_URL + 'api/account/changePassword', data)
-                //{headers: authHeader()})
                 .then(function (response) {
                     deferred.resolve(response);
                 }, function (error) {
@@ -76,7 +69,6 @@
 
         function isAdministrator() {
             getCurrentUserInfo().then(function (success) {
-                console.log(success.isAdmin)
                 return success.isAdmin;
             })
         }
@@ -85,7 +77,6 @@
             getCurrentUserInfo()
                 .then(function (currentUser) {
                 if (!currentUser.isAdmin) {
-                    toaster.pop('error', 'Error');
                     return;
                 }
 

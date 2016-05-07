@@ -6,10 +6,10 @@
         .controller('LogoutController', logoutUser);
 
     logoutUser.$inject = [
-       '$scope',
+        '$scope',
         '$route',
         '$location',
-       'authenticationService',
+        'authenticationService',
         'toaster'];
 
     function logoutUser(
@@ -23,13 +23,11 @@
       $scope.logout = logout;
 
       function logout() {
-      authenticationService.logout()
-          //.then(function(success) {
-            toaster.pop('success', 'Logout successful!', null, defaultNotificationTimeout);
+          authenticationService.logout()
           $scope.isAuthenticated = false;
           $route.reload();
           //$location.path('/');
-           // });
-        }
+          toaster.pop('success', 'Logout successful!', null, defaultNotificationTimeout);
+      }
    }
 }());

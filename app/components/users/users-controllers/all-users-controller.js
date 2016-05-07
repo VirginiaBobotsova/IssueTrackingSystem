@@ -20,7 +20,7 @@
             .then(function (users) {
                 $scope.users = users;
             }, function (error) {
-                toaster.pop('error', 'Error', defaultNotificationTimeout)
+                toaster.pop('error', 'Error', null, defaultNotificationTimeout)
             });
     }
 }());

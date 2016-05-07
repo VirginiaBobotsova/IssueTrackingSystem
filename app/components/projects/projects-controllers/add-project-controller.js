@@ -3,22 +3,20 @@
 
     angular
         .module('issueTrackingSystem.projects.addProject', [])
-        .controller('AddProjectController', addProject);
+        .controller('AddProjectController', addProjectController);
 
-    addProject.$inject = [
+    addProjectController.$inject = [
         '$scope',
         '$location',
         'usersService',
         'projectsService',
-        'authenticationService',
         'toaster'];
 
-    function addProject(
+    function addProjectController(
         $scope,
         $location,
         usersService,
         projectsService,
-        authenticationService,
         toaster) {
         var defaultNotificationTimeout = 2000;
 
@@ -26,6 +24,7 @@
 
         usersService.getUsers()
             .then(function (users) {
+                console.log(users)
                 $scope.users = users;
             });
 
@@ -44,9 +43,9 @@
             projectsService.addProject(projectModel)
                 .then(function (response) {
                     $location.path('#/projects/' + response.data.Id);
-                    toaster.pop('success', 'Project edited successfully', null, defaultNotificationTimeout);
+                    toaster.pop('success', 'The project is added successfully', null, defaultNotificationTimeout);
                 }, function (error) {
-                    toaster.pop('error', 'Error', null, defaultNotificationTimeout)
+                    toaster.pop('error', 'An error occurred', null, defaultNotificationTimeout)
                 });
         }
     }

@@ -29,17 +29,12 @@
             addComment : addComment
         };
 
-        //function authHeader() {
-          //  return {Authorization: sessionStorage['access_token']};
-        //}
-
         function getIssuesByGivenFilter(pageSize, pageNumber, filter) {
             pageSize = pageSize || defaultPageSize;
             pageNumber = pageNumber || defaultPageNumber;
             filter = filter || defaultFilter;
             var deferred = $q.defer();
             $http.get(BASE_URL + 'issues/?pageSize=' + pageSize + '&pageNumber=' + pageNumber + '&filter=' + filter)
-               // {headers: authHeader()})
                 .then(function(response) {
                     deferred.resolve(response.data);
                 }, function(error) {
@@ -55,9 +50,7 @@
             orderBy = orderBy || defaultIssuesOrder;
             var deferred = $q.defer();
             $http.get(BASE_URL + 'issues/me?pageSize=' + pageSize + '&pageNumber=' + pageNumber + '&orderBy=' + orderBy)
-                //{headers: authHeader()})
                 .then(function(response) {
-                    console.log(response)
                     deferred.resolve(response.data);
                 }, function(error) {
                     deferred.reject(error);
@@ -69,9 +62,7 @@
         function getIssueById(id) {
             var deferred = $q.defer();
             $http.get(BASE_URL + 'issues/' + id)
-               // {headers: authHeader()})
                 .then(function (response) {
-                    console.log(response.data)
                     deferred.resolve(response.data);
                 }, function (error) {
                     deferred.reject(error);
@@ -84,7 +75,6 @@
             data = manageLabels(data);
             var deferred = $q.defer();
             $http.post(BASE_URL + 'issues', data)
-                //{headers: authHeader()})
                 .then(function (response) {
                     deferred.resolve(response);
                 }, function (error) {
@@ -98,7 +88,6 @@
             data = manageLabels(data);
             var deferred = $q.defer();
             $http.put(BASE_URL + 'issues/' + id, data)
-                //{headers: authHeader()})
                 .then(function (response) {
                     deferred.resolve(response)
                 }, function (error) {
@@ -111,7 +100,6 @@
         function editIssueCurrentStatus(id, statusId) {
             var deferred = $q.defer();
             $http.put(BASE_URL + 'issues/' + id + '/changestatus?statusid=' + statusId)
-                //{headers: authHeader()})
                 .then(function (response) {
                     deferred.resolve(response)
                 }, function (error) {
@@ -153,7 +141,6 @@
         function getIssueComments(id){
             var deferred = $q.defer();
             $http.get(BASE_URL + 'issues/' + id + '/comments')
-               // {headers: authHeader()})
                 .then(function (response) {
                     deferred.resolve(response);
                 }, function (error) {
@@ -165,9 +152,7 @@
         function addComment(id, data){
             var deferred = $q.defer();
             $http.post(BASE_URL + 'issues/' + id + '/comments', data)
-                //{headers: authHeader()})
                 .then(function (response) {
-                    console.log(response)
                     deferred.resolve(response);
                 }, function (error) {
                     deferred.reject(error);

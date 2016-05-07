@@ -3,50 +3,46 @@
 
     angular
         .module('issueTrackingSystem.projects.editProject', [])
-        .controller('EditProjectController', editProject);
+        .controller('EditProjectController', editProjectController);
 
-    editProject.$inject = [
+    editProjectController.$inject = [
         '$scope',
         '$routeParams',
         '$location',
         'usersService',
         'projectsService',
-        'authenticationService',
         'toaster'];
 
-    function editProject(
+    function editProjectController(
         $scope,
         $routeParams,
         $location,
         usersService,
         projectsService,
-        authenticationService,
         toaster) {
         var defaultNotificationTimeout = 2000;
 
-        $scope.isAdmin = usersService.isAdministrator();
-
         projectsService.getProjectById($routeParams.id)
             .then(function (project) {
-                if(!$scope.isAdmin){
-                    usersService.getCurrentUserInfo()
-                        .then(function (user) {
-                            console.log(user)
-                            console.log(project.data)
-                            $scope.isLead = (project.data.Lead.Id === user.Id);
-                            if(!$scope.isLead){
+                usersService.getCurrentUserInfo()
+                    .then(function (user) {
+                        $scope.isAdmin = user.isAdmin;
+                        $scope.isLead = (project.data.Lead.Id === user.Id);
+                        if(!$scope.isAdmin) {
+                            if (!$scope.isLead) {
                                 $location.path('/');
                                 toaster.pop('error', 'Unauthorized', null, defaultNotificationTimeout);
                                 return;
                             }
-                        });
-                }
+                        }
+                    });
+
                 $scope.project = projectsService.transformPrioritiesAndLabels(project.data);
                 $scope.projectCurrentLeadId = project.data.Lead.Id
             });
+
         usersService.getUsers()
             .then(function (users) {
-                console.log(users)
                 $scope.users = users;
             });
 
@@ -65,8 +61,7 @@
             };
             projectsService.editProject(projectModel)
                 .then(function (success) {
-                    console.log(success)
-                    toaster.pop('success', 'Project edited successfully', null, defaultNotificationTimeout);
+                    toaster.pop('success', 'Project is edited successfully', null, defaultNotificationTimeout);
                     $location.path('/projects/' + success.data.Id);
                 }, function (error) {
                     toaster.pop('error', 'Error', null, defaultNotificationTimeout);

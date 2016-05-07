@@ -1,17 +1,20 @@
-<div>
-    <div class="user-dashboard">
-        <a class="btn btn-md btn-success" href="#/">Dashboard</a>
-        <a class="btn btn-md btn-success" href="#/projects">Projects</a>
-        <br>
-        <h1>Projects</h1>
-        <br />
-            <div class="item panel" ng-repeat="project in projects">
+<div class="user-dashboard">
+    <a class="btn btn-md btn-success common" href="#/">Dashboard</a>
+    <br>
+    <h3>Projects</h3>
+    <br />
+    <div class="row">
+        <div class="col-sm-12 col-sm-offset-1 col-md-12 col-md-offset-1 col-lg-12 col-lg-offset-1">
+            <div  ng-repeat="project in projects">
                 <p>
                     {{project.Name}}
                     <a class="btn btn-sm btn-success" href="#/projects/{{project.Id}}">view</a>
                 </p>
             </div>
-        <a class="btn btn-md btn-success" href="#/projects/add">Add New Project</a>
+
+        </div>
+        <a class="btn btn-md btn-success common" href="#/projects/add">Add New Project</a>
     </div>
 </div>
+
 

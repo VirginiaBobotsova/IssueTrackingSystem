@@ -12,7 +12,6 @@
             'usersService',
             'projectsService',
             'issuesService',
-            'authenticationService',
             'toaster'];
 
     function getIssueController(
@@ -22,7 +21,6 @@
         usersService,
         projectsService,
         issuesService,
-        authenticationService,
         toaster) {
         var defaultNotificationTimeout = 2000;
 

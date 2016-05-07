@@ -21,10 +21,10 @@
         $scope.editUser = function (user) {
             usersService.editUser(user)
                 .then(function (response) {
-                    toaster.pop('success', '', defaultNotificationTimeout);
+                    toaster.pop('success', 'Success', null, defaultNotificationTimeout);
                     $location.path('/')
                 }, function (error) {
-                    toaster.pop('error', 'Error', defaultNotificationTimeout);
+                    toaster.pop('error', 'Error', null, defaultNotificationTimeout);
                 });
         };
     }

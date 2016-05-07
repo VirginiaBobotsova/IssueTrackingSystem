@@ -55,19 +55,9 @@
         function register(user, registerForm) {
             authenticationService.register(user)
                 .then(function (responce) {
-                    toaster.pop('success', 'Register successful!', null, defaultNotificationTimeout);
                     login(user);
-
-                    //$scope.registerForm.$setPristine();
-                   // var loginData = {
-                     //   Username: responce.config.data.Email,
-                       // Password: responce.config.data.Password
-                   // },
-                   // authenticationService.login(loginData)
-                     //   .then(function() {
-                            //$route.reload();
-
-                    },
+                    toaster.pop('success', 'Register successful!', null, defaultNotificationTimeout);
+                },
                function (error) {
                    toaster.pop('error', 'Registration error!', error.data, defaultNotificationTimeout);
               });
@@ -76,10 +66,8 @@
         function login(user) {
             authenticationService.login(user)
                 .then(function (data) {
-                    //identificationService.requestUserProfile();
                     $route.reload();
                     toaster.pop('success', 'Login successful!', null, defaultNotificationTimeout);
-                    //$scope.loginForm.$setPristine();
                 }, function (error) {
                     toaster.pop('error', 'Login error!', null, defaultNotificationTimeout);
                 });
@@ -91,10 +79,8 @@
                 $scope.issuesParams.pageNumber,
                 $scope.issuesParams.orderBy)
                 .then(function (data) {
-                    console.log(data)
                     $scope.totalIssues = data.TotalCount;
                     $scope.totalPages = data.TotalPages;
-
                     $scope.currentPage = 1;
 
                     $scope.setPage = function (pageNumber) {
@@ -119,7 +105,6 @@
             )
                 .then(function (data) {
                     var projects = [];
-                    console.log(data.Issues)
                     data.Issues.forEach(function (issue) {
                         if(!projects.find(function (project) {
                                 return project.Id === issue.Project.Id;
@@ -133,7 +118,6 @@
                     console.log(projects)
                     usersService.getCurrentUserInfo()
                         .then(function (data) {
-                            console.log(data)
                             projectsService.getUserRelatedProjects(data.Id)
                                 .then(function (userProjects) {
                                     userProjects.forEach(function (pr) {
@@ -146,7 +130,6 @@
                                             });
                                         }
                                     });
-                                    console.log(projects)
                                     $scope.userProjects = projects;
                                 })
                         });

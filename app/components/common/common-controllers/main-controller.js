@@ -13,10 +13,8 @@
     function MainController($scope, identificationService, usersService) {
         identificationService.getCurrentUser()
             .then(function(user) {
-                console.log(user)
                 $scope.currentUser = user;
                 $scope.isAuthenticated = true;
-                //$scope.isAdmin = user.isAdmin;
             });
     }
 }());

@@ -3,17 +3,19 @@
 
     angular
         .module('issueTrackingSystem.projects.allProjects', [])
-        .controller('AllProjectsController', getAllProjects);
+        .controller('AllProjectsController', allProjectsController);
 
-    getAllProjects.$inject = [
+    allProjectsController.$inject = [
         '$scope',
         'projectsService',
         'usersService'];
 
-    function getAllProjects(
+    function allProjectsController(
         $scope,
         projectsService,
         usersService) {
+        $scope.isAdmin = usersService.isAdministrator();
+
         projectsService.getAllProjects()
             .then(function (projects) {
                 $scope.projects = projects.data;

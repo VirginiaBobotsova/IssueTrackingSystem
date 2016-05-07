@@ -27,11 +27,6 @@
                 controller: 'LogoutController',
                 resolve : routeChecks.authenticated
             })
-            //.when('/profile', {
-              //  templateUrl: 'app/components/users/users-templates/edit-profile.html',
-             //   controller: 'EditProfileController',
-               // resolve : routeChecks.authenticated
-            //})
             .when('/profile/password', {
                 templateUrl: 'app/components/users/users-templates/change-user-password.html',
                 controller: 'ChangePasswordController',

@@ -13,7 +13,6 @@
         'usersService',
         'projectsService',
         'issuesService',
-        'authenticationService',
         'toaster'];
 
     function editIssueController(
@@ -24,7 +23,6 @@
         usersService,
         projectsService,
         issuesService,
-        authenticationService,
         toaster) {
         var defaultNotificationTimeout = 2000;
 
@@ -32,13 +30,11 @@
 
         issuesService.getIssueById($routeParams.id)
             .then(function (issue) {
-                //console.log(issue)
                 if(!$scope.isAdmin){
                     usersService.getCurrentUserInfo()
                         .then(function (user) {
                             projectsService.getAllProjects()
                                 .then(function (projects) {
-                                    console.log(projects)
                                     var currentProject = projects.data.filter(function (project) {
                                         return project.Id === issue.Project.Id
                                     })[0];
@@ -88,7 +84,6 @@
         function attachProjectPriorities(projectId) {
             projectsService.getProjectById(projectId)
                 .then(function(project) {
-                    console.log(project)
                     $scope.issue.Priorities = project.data.Priorities;
                 })
         }
@@ -102,7 +97,6 @@
                     toaster.pop('error', 'Error', null, defaultNotificationTimeout);
                 })
         }
-
     }
 }());
 
